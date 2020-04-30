@@ -1,0 +1,12 @@
+package kr.hs.dgsw.avocatalk.data.util
+
+import android.os.Environment
+
+object Constants {
+    val DIRECTORY_DOWNLOADS = ""
+    const val SOCKET_HOST = ""
+    const val DEFAULT_HOST = ""
+    const val DEFAULT_HOST_REST = ""
+    const val DEFAULT_HOST_GRAPHQL = ""
+    const val DEFAULT_HOST_IMAGE = ""
+}
