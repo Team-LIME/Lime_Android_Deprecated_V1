@@ -1,0 +1,4 @@
+rootProject.name='Lime_Android_V2'
+include ':presentation'
+include ':domain'
+include ':data'
