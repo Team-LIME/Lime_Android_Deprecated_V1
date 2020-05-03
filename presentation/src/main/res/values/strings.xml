@@ -1,3 +1,144 @@
 <resources>
     <string name="app_name">Lime_Android_V2</string>
+
+    <string name="title_main">메인</string>
+    <string name="title_profile">프로필 조회</string>
+    <string name="title_splash">스프레시</string>
+    <string name="title_register">회원가입</string>
+    <string name="title_login">로그인</string>
+    <string name="title_status_msg_edit">상태 메시지 수정</string>
+    <string name="title_name">이름</string>
+    <string name="title_email">E-mail</string>
+    <string name="title_auth_code">인증번호</string>
+    <string name="title_pw_check">비밀번호 확인</string>
+    <string name="title_pw">비밀번호</string>
+    <string name="title_id">아이디</string>
+    <string name="title_phone">전화번호</string>
+    <string name="title_add_friend">친구추가</string>
+    <string name="title_status_msg">상태 메시지</string>
+    <string name="title_modify_profile_img">프로필 사진 변경</string>
+    <string name="title_modify_password">비밀번호 변경</string>
+    <string name="title_friend_tab">친구</string>
+    <string name="title_chatting_tab">채팅방</string>
+    <string name="title_more_tab">더보기</string>
+    <string name="title_meals">급식</string>
+    <string name="title_breakfast">아침</string>
+    <string name="title_lunch">점심</string>
+    <string name="title_dinner">저녁</string>
+
+    <string name="menu_add_friend">친구추가</string>
+    <string name="menu_download_image">사진저장</string>
+
+    <string name="btn_add">추가하기</string>
+    <string name="btn_yes">네</string>
+    <string name="btn_no">아니오</string>
+    <string name="btn_next">다음</string>
+    <string name="btn_sign_up">가입하기</string>
+    <string name="btn_ok">확인</string>
+    <string name="btn_mod_pw">비밀번호 변경</string>
+    <string name="btn_send">전송</string>
+    <string name="btn_modify">수정</string>
+    <string name="btn_search">검색</string>
+    <string name="btn_no_phone">휴대전화가 없습니다.</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_logout">LOGOUT</string>
+    <string name="btn_one_to_one_chatting">1:1 채팅</string>
+    <string name="btn_edit_profile">프로필 설정</string>
+    <string name="btn_pick_camera">카메라로 촬영</string>
+    <string name="btn_pick_gallery">갤러리에서 선택</string>
+    <string name="btn_delete_img">기본이미지로 변경</string>
+    <string name="btn_add_img">사진</string>
+    <string name="btn_add_friend">친구추가</string>
+    <string name="btn_add_meals">급식</string>
+
+    <string name="text_school_email_address">\@dgsw.hs.kr</string>
+    <string name="text_count_down">남은시간\t:\t</string>
+    <string name="text_dding_dong">띵동!</string>
+    <string name="text_stop">잠깐!</string>
+    <string name="text_sending">전송중..</string>
+    <string name="text_camera">카메라</string>
+    <string name="text_photo">사진</string>
+    <string name="text_loading">Loading</string>
+    <string name="text_success_sign_up">가입성공!</string>
+    <string name="text_success_modify">변경성공!</string>
+    <string name="text_fail_sign_up">가입실패!</string>
+    <string name="text_fail_modify">변경실패!</string>
+    <string name="btn_reset_email">이메일 다시 입력하기</string>
+    <string name="btn_time_out">재전송</string>
+
+    <string name="error_msg_empty">빈칸없이 입력 해 주세요</string>
+    <string name="error_msg_meal_empty">급식이 없습니다</string>
+    <string name="error_msg_not_match_pw">두 비밀번호가 서로 다릅니다.</string>
+    <string name="error_msg_get_img">이미지를 가져오는 중 오류가 발생했습니다.</string>
+    <string name="error_msg_permission">"권한을 허용하지 않으면&lt;br /&gt;아보카톡 사용이 불가능합니다."</string>
+    <string name="error_msg_double_account">이미 가입된 계정입니다.</string>
+    <string name="error_msg_id_condition_1">아이디는 8자 이상으로 구성하여야 합니다.</string>
+    <string name="error_msg_id_condition_2">아이디는 영문,숫자조합만 가능합니다.</string>
+    <string name="error_msg_id_condition_3">아이디는 15자 이하로 구성하여야 합니다.</string>
+    <string name="error_msg_empty_id">아이디를 입력해주세요.</string>
+    <string name="error_msg_empty_pw">비밀번호를 입력해주세요.</string>
+    <string name="error_msg_empty_name">이름을 입력해주세요.</string>
+    <string name="error_msg_name_condition">이름에는 한글 입력만 가능합니다</string>
+    <string name="error_msg_pw_condition">비밀번호는 문자, 숫자를 포함하여 8자 이상으로 구성하여야 합니다.</string>
+    <string name="error_msg_dis_match">일치하지 않습니다.</string>
+    <string name="error_msg_call_admin">지속적인 문제가 발생한다면\n관리자에게 문의해주세요&lt;br /&gt;Error Message:</string>
+    <string name="error_msg_download_image">사진 다운로드중 오류 발생</string>
+    <string name="error_msg_dis_match_auth_code">인증번호가 일치하지 않습니다.</string>
+    <string name="error_msg_time_out">시간 초과</string>
+    <string name="error_msg_not_email">올바르지 않은 이메일 형식입니다.</string>
+
+
+    <string name="msg_email_send_success">\@dgsw.hs.kr 로 인증번호가 전송되었습니다.\n정확하게 입력 해 주세요.</string>
+    <string name="msg_useful_id">사용가능한 아이디 입니다</string>
+    <string name="msg_welcome">회원이 되신걸 진심으로 환영합니다!</string>
+    <string name="msg_plz_login_again">다시 로그인 해주세요!</string>
+    <string name="msg_useful_pw">사용가능한 비밀번호 입니다</string>
+    <string name="msg_useful_name">올바른 형식의 이름이 입력되었습니다.</string>
+    <string name="msg_useful_phone">올바른 형식의 전화번호가 입력되었습니다.</string>
+    <string name="msg_checked_no_phone">휴대전화가 없음에 체크되어 있습니다.</string>
+    <string name="msg_no_phone">휴대전화가 없습니다.</string>
+    <string name="msg_success_add_friend">친구추가가 완료되었습니다.</string>
+    <string name="msg_match">일치합니다.</string>
+    <string name="msg_success_permission">권한 허용이 완료되었습니다!</string>
+    <string name="msg_download_image">사진 저장완료</string>
+    <string name="msg_dont_save">진행사항은 저장되지 않습니다.</string>
+    <string name="msg_need_network">네트워크 연결이 필요한 기능입니다.</string>
+    <string name="msg_no_offline_data">해당 페이지의 데이터가 없습니다.&lt;br /&gt;네트워크에 연결해 주세요.</string>
+
+    <string name="hint_id">아이디</string>
+    <string name="hint_new_pw">새 비밀번호</string>
+    <string name="hint_new_pw_check">새 비밀번호 확인</string>
+    <string name="hint_search_id">검색할 아이디</string>
+    <string name="hint_pw">비밀번호</string>
+    <string name="hint_email">이메일</string>
+    <string name="hint_auth_code">6자리 인증번호</string>
+    <string name="hint_pw_check">비밀번호 확인</string>
+    <string name="hint_name">이름</string>
+    <string name="hint_phone">자신의 번호 입력</string>
+    <string name="hint_modify_status_msg">변경 할 상태메시지 입력</string>
+    <string name="hint_chat">메시지를 입력하세요.</string>
+
+    <string name="notice_name">부적절한 이름은 가입이 거절될 수 있습니다.\n꼭 자신의 실명을 입력해 주세요</string>
+    <string name="notice_email">E-mail은 본교 학생 인증에 사용됩니다.\n\"@dgsw.hs.kr\"형식의 이메일을 사용 해 주세요</string>
+    <string name="notice_success_email_auth">아래 이메일로 본교 학생이 인증되었습니다.</string>
+    <string name="notice_unable_to_change_name">이름은 변경이 불가능합니다.</string>
+    <string name="notice_unable_to_change_email">이메일은 변경이 불가능합니다.</string>
+    <string name="notice_unable_to_change_phone">전화번호는 변경이 불가능합니다.</string>
+    <string name="notice_permission_1">아보카톡을 사용하기 위해 아래\n접근권한의 허용이 필요합니다.</string>
+    <string name="notice_permission_2">이미지 전송 및 프로필/배경사진 설정 시 사진촬영</string>
+    <string name="notice_modify_pw">비밀번호 변경 후 자동 로그아웃됩니다.</string>
+
+    <string name="ask_msg_sign_up">가입하시겠습니까?</string>
+    <string name="ask_msg_cancel">취소하시겠습니까?</string>
+    <string name="ask_msg_modify_pw">변경하시겠습니까?</string>
+    <string name="ask_msg_logout">로그아웃 하시겠습니까?</string>
+
+    <string name="login_ask_dont_have_id">계정이 없으신가요?</string>
+    <string name="move_to_register">가입하기</string>
+    <string name="friend">친구</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
+

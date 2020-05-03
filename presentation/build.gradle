@@ -7,6 +7,10 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "kr.hs.dgsw.avocatalk"
         minSdkVersion 23
@@ -24,9 +28,7 @@ android {
         }
     }
 
-    dataBinding {
-        enabled true
-    }
+    dataBinding { enabled = true }
 
 }
 
@@ -59,6 +61,7 @@ dependencies {
     //ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
     //Socket.io
     implementation("io.socket:socket.io-client:$socketVersion") {
@@ -68,7 +71,7 @@ dependencies {
     //TabLayout
     implementation "com.android.support:design:$androidSupportDesignVersion"
 
-    //ImageURLdownload
+    //ImageUrlDownload
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
@@ -94,4 +97,17 @@ dependencies {
     //MaterialDesign
     implementation "com.google.android.material:material:$materialVersion"
 
+    //Dagger2
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    /**
+     * Fragment KTX
+     * https://developer.android.com/kotlin/ktx#fragment 참고.
+     */
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
 }

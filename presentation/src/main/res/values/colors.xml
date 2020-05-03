@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFC107</color>
+    <color name="colorAccent">#FFC107</color>
+
+    <color name="colorStatusBar">#ffffff</color>
+    <color name="colorGray">#868686</color>
+    <color name="colorLightGray">#DDDDDD</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorDarkGray">#242424</color>
+    <color name="colorToolbar">#6F000000</color>
+    <color name="colorChatBox">#DDDDDD</color>
+
+    <color name="colorWarning">#E74C3C</color>
+    <color name="colorSuccess">#3C58E7</color>
+
+    <color name="backGroundColor">#ffffff</color>
+    <color name="textColor">#303030</color>
+    <color name="btnTextColor">#ffffff</color>
+    <color name="objColor">#000000</color>
+
+    <color name="tabBarColor">#f9f9f9</color>
+    <color name="tabBarLineColor">#d8d8d9</color>
+    <color name="tabBarIconColor">#30363d</color>
 </resources>
