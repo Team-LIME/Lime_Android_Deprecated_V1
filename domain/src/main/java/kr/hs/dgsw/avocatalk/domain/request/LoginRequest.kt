@@ -1,14 +1,13 @@
 package kr.hs.dgsw.avocatalk.domain.request
 
 import kr.hs.dgsw.avocatalk.domain.util.Sha512Converter
-import java.security.NoSuchAlgorithmException
 
-class LoginRequest(id: String, pw: String) {
-    var id: String? = null
+class LoginRequest(email : String, pw: String) {
+    var email: String? = null
     var pw: String? = null
 
     init {
-        this.id = id
+        this.email = email
         this.pw = Sha512Converter.ConvertSHA512(pw)
     }
 }
