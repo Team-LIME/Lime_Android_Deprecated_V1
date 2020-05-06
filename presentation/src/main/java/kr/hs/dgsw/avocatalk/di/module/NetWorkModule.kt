@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
-import io.socket.client.IO
 import kr.hs.dgsw.avocatalk.data.util.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,7 +40,7 @@ class NetWorkModule {
     fun provideRetrofit(gson: Gson, @Named("HTTP") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Constants.DEFAULT_HOST)
+            .baseUrl(Constants.DEFAULT_HOST_REST)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .callbackExecutor(Executors.newSingleThreadExecutor())

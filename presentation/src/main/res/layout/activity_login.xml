@@ -12,15 +12,16 @@
             type="kr.hs.dgsw.avocatalk.eventobserver.LoginEventObserver" />
 
         <variable
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+
+        <variable
             name="email"
             type="String" />
 
         <variable
             name="pw"
             type="String" />
-        <variable
-            name="globalValue"
-            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
     </data>
 
     <LinearLayout
@@ -86,7 +87,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_layout_id"
+                    android:id="@+id/input_layout_email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +95,7 @@
                     app:suffixText="@string/text_school_email_address">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_id"
+                        android:id="@+id/input_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="flagNoExtractUi|flagNoFullscreen|flagNoAccessoryAction"
@@ -158,8 +159,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
                     android:indeterminate="true"
                     android:indeterminateTint="@android:color/white"
                     android:visibility="@{globalValue.isLoading()?View.VISIBLE:View.GONE}"

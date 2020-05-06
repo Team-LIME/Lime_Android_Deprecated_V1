@@ -4,10 +4,11 @@ import io.reactivex.Single
 import kr.hs.dgsw.avocatalk.data.network.response.Response
 import kr.hs.dgsw.avocatalk.data.network.response.data.LoginData
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
+import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface LoginService {
-    @POST("auth/login")
-    fun login(@Body request: LoginRequest): Single<retrofit2.Response<Response<LoginData>>>
+interface RegisterService {
+    @POST("auth/register")
+    fun register(@Body request: RegisterRequest): Single<retrofit2.Response<Response<Any>>>
 }

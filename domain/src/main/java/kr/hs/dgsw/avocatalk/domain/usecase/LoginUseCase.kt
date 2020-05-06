@@ -11,11 +11,10 @@ class LoginUseCase @Inject constructor(
 ): ParamsUseCase<LoginUseCase.Params, Completable>()  {
 
     override fun buildUseCaseObservable(params: Params): Completable {
-        return loginRepository.login(LoginRequest(params.id, params.pw))
+        return loginRepository.login(params.loginRequest)
     }
 
     data class Params(
-        val id: String,
-        val pw: String
+        val loginRequest: LoginRequest
     )
 }

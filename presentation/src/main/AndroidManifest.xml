@@ -17,6 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.activity.RegisterActivity"></activity>
         <activity android:name=".view.activity.LoginActivity"></activity>
         <activity android:name=".view.activity.MainActivity">
 

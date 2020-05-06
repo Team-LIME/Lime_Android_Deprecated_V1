@@ -25,6 +25,7 @@
     <string name="title_breakfast">아침</string>
     <string name="title_lunch">점심</string>
     <string name="title_dinner">저녁</string>
+    <string name="title_agreement">약관동의</string>
 
     <string name="menu_add_friend">친구추가</string>
     <string name="menu_download_image">사진저장</string>
@@ -75,7 +76,7 @@
     <string name="error_msg_id_condition_1">아이디는 8자 이상으로 구성하여야 합니다.</string>
     <string name="error_msg_id_condition_2">아이디는 영문,숫자조합만 가능합니다.</string>
     <string name="error_msg_id_condition_3">아이디는 15자 이하로 구성하여야 합니다.</string>
-    <string name="error_msg_empty_id">아이디를 입력해주세요.</string>
+    <string name="error_msg_empty_email">이메일을 입력해주세요.</string>
     <string name="error_msg_empty_pw">비밀번호를 입력해주세요.</string>
     <string name="error_msg_empty_name">이름을 입력해주세요.</string>
     <string name="error_msg_name_condition">이름에는 한글 입력만 가능합니다</string>
@@ -89,7 +90,7 @@
 
 
     <string name="msg_email_send_success">\@dgsw.hs.kr 로 인증번호가 전송되었습니다.\n정확하게 입력 해 주세요.</string>
-    <string name="msg_useful_id">사용가능한 아이디 입니다</string>
+    <string name="msg_of_no_use_email">중복된 이메일입니다.</string>
     <string name="msg_welcome">회원이 되신걸 진심으로 환영합니다!</string>
     <string name="msg_plz_login_again">다시 로그인 해주세요!</string>
     <string name="msg_useful_pw">사용가능한 비밀번호 입니다</string>

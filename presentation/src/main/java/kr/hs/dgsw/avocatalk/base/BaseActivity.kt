@@ -21,13 +21,14 @@ abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
     protected lateinit var mBinding: VB
 
     protected open fun setDataBinding() {}
-    protected open fun observerViewModel() {}
+    protected open fun observerLiveData() {}
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        mViewModel.onErrorEvent.observe(this, androidx.lifecycle.Observer { onErrorEvent(it) })
         //Todo onErrorEvent 처리.
         setDataBinding()
+        observerLiveData()
     }
 
     protected open fun onErrorEvent(e: Throwable) {

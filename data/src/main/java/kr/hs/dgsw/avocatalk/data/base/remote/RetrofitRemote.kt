@@ -17,7 +17,7 @@ abstract class RetrofitRemote<SV> : BaseRemote<SV>() {
     private val RETROFIT: Retrofit = Retrofit.Builder()
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(Constants.DEFAULT_HOST)
+        .baseUrl(Constants.DEFAULT_HOST_REST)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .callbackExecutor(Executors.newSingleThreadExecutor())
         .build()
