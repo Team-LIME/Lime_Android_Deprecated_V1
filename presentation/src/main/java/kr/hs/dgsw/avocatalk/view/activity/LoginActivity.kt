@@ -7,12 +7,10 @@ import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
-import kr.hs.dgsw.avocatalk.data.widget.GlobalValue.isLoading
-import kr.hs.dgsw.avocatalk.data.widget.GlobalValue.onErrorEvent
 import kr.hs.dgsw.avocatalk.databinding.ActivityLoginBinding
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
-import kr.hs.dgsw.avocatalk.eventobserver.LoginEventObserver
+import kr.hs.dgsw.avocatalk.eventobserver.activity.LoginEventObserver
 import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
 import retrofit2.HttpException
@@ -23,7 +21,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     @Inject
     lateinit var mAuthViewModelFactory: AuthViewModelFactory
 
-    val mAuthViewModel: AuthViewModel
+    private val mAuthViewModel: AuthViewModel
         get() = getViewModel(mAuthViewModelFactory)
 
     override fun setDataBinding() {
@@ -33,7 +31,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         initBindingData(BR.email, "")
         initBindingData(BR.pw, "")
 
-        initBindingData(BR.eventObserver, object : LoginEventObserver {
+        initBindingData(BR.eventObserver, object :
+            LoginEventObserver {
 
             override fun onClickLoginBtn() {
                 when {
@@ -41,7 +40,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     mBinding.pw.isNullOrBlank() -> mBinding.inputLayoutPassword.error = getString(R.string.error_msg_empty_pw)
                     else -> {
                         mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}", mBinding.pw!!))
-                        isLoading.value = true
+                        GlobalValue.isLoading.value = true
                     }
                 }
             }
@@ -57,11 +56,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         mAuthViewModel.loginSuccessEvent.observe(this, Observer {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         })
-        onErrorEvent.observe(this, Observer {
-            if(it is HttpException){
-                mBinding.inputLayoutPassword.error = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다."
-            }
-        })
+    }
+
+    override fun onErrorEvent(e: Throwable) {
+        super.onErrorEvent(e)
+        if(e is HttpException){
+            mBinding.inputLayoutPassword.error = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다."
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

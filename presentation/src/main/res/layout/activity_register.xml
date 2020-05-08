@@ -7,7 +7,7 @@
 
         <variable
             name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.RegisterEventObserver" />
+            type="kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver" />
 
         <variable
             name="globalValue"
@@ -306,6 +306,8 @@
                             android:layout_marginBottom="5dp"
                             android:fontFamily="@font/default_font_light"
                             android:text="> 개인정보 수집 및 이용약관"
+                            android:textSize="14sp"
+                            android:onClick="@{()->eventObserver.onClickShowTerms1()}"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -315,6 +317,8 @@
                             android:layout_marginBottom="5dp"
                             android:fontFamily="@font/default_font_light"
                             android:text="> 서비스 이용약관 "
+                            android:textSize="14sp"
+                            android:onClick="@{()->eventObserver.onClickShowTerms2()}"
                             android:textColor="@color/textColor" />
                     </LinearLayout>
 

@@ -2,15 +2,17 @@ package kr.hs.dgsw.avocatalk.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
+import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.databinding.ActivityRegisterBinding
+import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
-import kr.hs.dgsw.avocatalk.eventobserver.RegisterEventObserver
+import kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver
+import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
 import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
 import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
@@ -21,13 +23,14 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     @Inject
     lateinit var mAuthViewModelFactory: AuthViewModelFactory
 
-    val mAuthViewModel: AuthViewModel
+    private val mAuthViewModel: AuthViewModel
         get() = getViewModel(mAuthViewModelFactory)
 
     override fun setDataBinding() {
         super.setDataBinding()
         initBindingData(BR.globalValue, GlobalValue)
-        initBindingData(BR.eventObserver, object : RegisterEventObserver {
+        initBindingData(BR.eventObserver, object :
+            RegisterEventObserver {
             override fun onClickRegisterBtn() {
 
                 mBinding.inputLayoutName.error  = null
@@ -86,7 +89,14 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             }
 
             override fun onClickShowTerms1() {
-                TODO("약관 Dialog 이동")
+                MessageDialog(
+                    getString(R.string.text_success_register),
+                    getString(R.string.msg_success_register),
+                    false,
+                    getString(R.string.btn_ok),
+                    null,
+                    this@RegisterActivity
+                ).show(supportFragmentManager)
             }
 
             override fun onClickShowTerms2() {
@@ -98,19 +108,27 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
     override fun observerLiveData() {
         super.observerLiveData()
-
         mAuthViewModel.registerSuccessEvent.observe(this, Observer {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}",mBinding.pw!!))
         })
 
-        GlobalValue.onErrorEvent.observe(this, Observer {
-            if(it.message.equals("중복된 이메일")){
-                mBinding.inputLayoutEmail.error = getString(R.string.msg_of_no_use_email)
-                mBinding.inputLayoutEmail.requestFocus()
-            }
+        mAuthViewModel.loginSuccessEvent.observe(this, Observer {
+            mAuthViewModel.sendEmailRequest()
         })
 
+        mAuthViewModel.sendEmailSuccessEvent.observe(this, Observer {
+            logOut()
+            MessageDialog(getString(R.string.text_success_register),getString(R.string.msg_success_register),false, getString(R.string.btn_ok), null, this).show(supportFragmentManager)
+        })
+
+    }
+
+    override fun onErrorEvent(e: Throwable) {
+        super.onErrorEvent(e)
+        if(e.message.equals("중복된 이메일")){
+            mBinding.inputLayoutEmail.error = getString(R.string.msg_of_no_use_email)
+            mBinding.inputLayoutEmail.requestFocus()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

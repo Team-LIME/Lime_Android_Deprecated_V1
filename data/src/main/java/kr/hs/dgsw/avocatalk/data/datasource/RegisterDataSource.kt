@@ -12,4 +12,6 @@ class RegisterDataSource @Inject constructor(
 ) : BaseDataSource<RegisterRemote, Any>() {
 
     fun register(registerRequest: RegisterRequest): Single<String> = remote.register(registerRequest)
+
+    fun sendEmail(): Single<String> = remote.sendEmail()
 }

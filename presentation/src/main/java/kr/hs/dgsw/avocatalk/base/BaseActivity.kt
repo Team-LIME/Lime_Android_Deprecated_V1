@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
+import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
@@ -21,12 +22,17 @@ abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
     protected lateinit var mBinding: VB
 
     protected open fun setDataBinding() {}
-    protected open fun observerLiveData() {}
+    protected open fun observerLiveData() {
+        GlobalValue.onErrorEvent.observe(this, androidx.lifecycle.Observer {
+            onErrorEvent(it)
+        })
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        mViewModel.onErrorEvent.observe(this, androidx.lifecycle.Observer { onErrorEvent(it) })
         //Todo onErrorEvent 처리.
+        if (!::mBinding.isInitialized) mBinding = DataBindingUtil.setContentView(this, layoutRes())
         setDataBinding()
         observerLiveData()
     }
@@ -43,8 +49,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
     }
 
     protected fun initBindingData(br: Int,data: Any) {
-
-        if (!::mBinding.isInitialized) mBinding = DataBindingUtil.setContentView(this, layoutRes())
         mBinding.setVariable(br, data)
         mBinding.lifecycleOwner = this
         mBinding.executePendingBindings()

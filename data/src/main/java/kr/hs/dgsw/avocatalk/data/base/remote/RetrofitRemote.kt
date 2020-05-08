@@ -1,6 +1,7 @@
 package kr.hs.dgsw.avocatalk.data.base.remote
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import kr.hs.dgsw.avocatalk.data.network.interceptor.TokenInterceptor
 import kr.hs.dgsw.avocatalk.data.util.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

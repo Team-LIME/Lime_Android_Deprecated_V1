@@ -51,6 +51,7 @@
     <string name="btn_add_img">사진</string>
     <string name="btn_add_friend">친구추가</string>
     <string name="btn_add_meals">급식</string>
+    <string name="btn_resend"><u>재전송</u></string>
 
     <string name="text_school_email_address">\@dgsw.hs.kr</string>
     <string name="text_count_down">남은시간\t:\t</string>
@@ -61,6 +62,7 @@
     <string name="text_photo">사진</string>
     <string name="text_loading">Loading</string>
     <string name="text_success_sign_up">가입성공!</string>
+    <string name="text_success_register">회원가입이 완료되었습니다.</string>
     <string name="text_success_modify">변경성공!</string>
     <string name="text_fail_sign_up">가입실패!</string>
     <string name="text_fail_modify">변경실패!</string>
@@ -105,6 +107,7 @@
     <string name="msg_dont_save">진행사항은 저장되지 않습니다.</string>
     <string name="msg_need_network">네트워크 연결이 필요한 기능입니다.</string>
     <string name="msg_no_offline_data">해당 페이지의 데이터가 없습니다.&lt;br /&gt;네트워크에 연결해 주세요.</string>
+    <string name="msg_success_register">이메일로 전송된 URL을 통한 이메일 인증 후,\n정상적인 서비스 이용이 가능합니다.</string>
 
     <string name="hint_id">아이디</string>
     <string name="hint_new_pw">새 비밀번호</string>

@@ -1,4 +1,4 @@
-package kr.hs.dgsw.avocatalk.eventobserver
+package kr.hs.dgsw.avocatalk.eventobserver.activity
 
 interface RegisterEventObserver {
 

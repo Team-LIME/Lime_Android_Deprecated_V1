@@ -9,7 +9,9 @@ import javax.inject.Inject
 class RegisterRepositoryImpl @Inject constructor(
     private val registerDataSource: RegisterDataSource
 ) : RegisterRepository {
-    override fun register(registerRequest: RegisterRequest): Completable {
-        return registerDataSource.register(registerRequest).ignoreElement()
-    }
+    override fun register(registerRequest: RegisterRequest): Completable
+            = registerDataSource.register(registerRequest).ignoreElement()
+
+    override fun sendEmail(): Completable
+            = registerDataSource.sendEmail().ignoreElement()
 }

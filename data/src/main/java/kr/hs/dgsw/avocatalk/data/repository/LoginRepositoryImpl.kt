@@ -16,5 +16,6 @@ class LoginRepositoryImpl @Inject constructor(
     override fun login(loginRequest: LoginRequest): Completable =
         loginDataSource.login(loginRequest).flatMap {
             tokenDataSource.insertToken(Token(it.token)).toSingleDefault(it)
+            tokenDataSource.insertToken(Token(it.token)).toSingleDefault(it)
         }.ignoreElement()
 }
