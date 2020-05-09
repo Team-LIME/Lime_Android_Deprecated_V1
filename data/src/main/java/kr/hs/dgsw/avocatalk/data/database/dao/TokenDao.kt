@@ -1,9 +1,9 @@
-package kr.hs.dgsw.personer.project.lime_android.database.dao
+package kr.hs.dgsw.avocatalk.data.database.dao
 
 import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Single
-import kr.hs.dgsw.personer.project.lime_android.database.entity.TokenEntity
+import kr.hs.dgsw.avocatalk.data.database.entity.TokenEntity
 
 @Dao
 interface TokenDao {

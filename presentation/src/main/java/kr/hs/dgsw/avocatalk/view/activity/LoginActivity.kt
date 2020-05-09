@@ -11,6 +11,7 @@ import kr.hs.dgsw.avocatalk.databinding.ActivityLoginBinding
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
 import kr.hs.dgsw.avocatalk.eventobserver.activity.LoginEventObserver
+import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
 import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
 import retrofit2.HttpException
@@ -54,7 +55,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun observerLiveData() {
         super.observerLiveData()
         mAuthViewModel.loginSuccessEvent.observe(this, Observer {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            if(it) startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            else MessageDialog(
+                "이메일 인증이 필요합니다!",
+                getString(R.string.msg_success_register),
+                true,
+                "확인",
+                "URL이 만료되었나요?",
+                this,
+                false
+            ).show(supportFragmentManager)
         })
     }
 

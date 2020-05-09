@@ -4,15 +4,19 @@ import android.content.Context
 
 import androidx.room.Database
 import androidx.room.Room
-import kr.hs.dgsw.personer.project.lime_android.database.dao.TokenDao
-import kr.hs.dgsw.personer.project.lime_android.database.entity.TokenEntity
+import kr.hs.dgsw.avocatalk.data.database.dao.UserDao
+import kr.hs.dgsw.avocatalk.data.database.dao.TokenDao
+import kr.hs.dgsw.avocatalk.data.database.entity.UserEntity
+import kr.hs.dgsw.avocatalk.data.database.entity.TokenEntity
 
-@Database(entities = [TokenEntity::class],
+@Database(entities = [TokenEntity::class, UserEntity::class],
     version = 1, exportSchema = false
 )
 abstract class RoomDatabase : androidx.room.RoomDatabase() {
 
     abstract fun tokenDao(): TokenDao
+
+    abstract fun memberDao(): UserDao
 
     companion object {
 

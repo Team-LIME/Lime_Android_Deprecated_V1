@@ -4,8 +4,8 @@ import android.app.Application
 import io.reactivex.Completable
 import io.reactivex.Single
 import kr.hs.dgsw.avocatalk.data.base.BaseCache
-import kr.hs.dgsw.personer.project.lime_android.database.dao.TokenDao
-import kr.hs.dgsw.personer.project.lime_android.database.entity.TokenEntity
+import kr.hs.dgsw.avocatalk.data.database.dao.TokenDao
+import kr.hs.dgsw.avocatalk.data.database.entity.TokenEntity
 import javax.inject.Inject
 
 class TokenCache @Inject constructor(application: Application) : BaseCache(application) {

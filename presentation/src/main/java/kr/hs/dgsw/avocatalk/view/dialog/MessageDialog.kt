@@ -15,7 +15,8 @@ class MessageDialog(
     private val isShowHelpBtn: Boolean,
     private val btnText: String,
     private val helpBtnText: String?,
-    private val activity:BaseActivity<*>
+    private val activity:BaseActivity<*>,
+    private val isFinishParentActivity:Boolean
 ) : BaseDialog<DialogMessageBinding>(){
 
     override fun setDataBinding() {
@@ -24,7 +25,7 @@ class MessageDialog(
         mBinding.setVariable(BR.eventObserver, object : MessageEventObserver{
             override fun onClickOkBtn() {
                 dismiss()
-                activity.finish()
+                if (isFinishParentActivity) activity.finish()
             }
         })
 

@@ -1,4 +1,4 @@
-package kr.hs.dgsw.personer.project.lime_android.database.entity
+package kr.hs.dgsw.avocatalk.data.database.entity
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

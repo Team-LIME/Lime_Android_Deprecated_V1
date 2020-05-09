@@ -1,4 +1,4 @@
-package kr.hs.dgsw.personer.project.lime_android.database.sharedpreferences
+package kr.hs.dgsw.avocatalk.data.database.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences

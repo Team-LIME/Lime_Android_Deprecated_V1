@@ -1,4 +1,4 @@
-package kr.hs.dgsw.personer.project.lime_android.database.dao
+package kr.hs.dgsw.avocatalk.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Completable
 import io.reactivex.Single
-import kr.hs.dgsw.personer.project.lime_android.database.entity.MealEntity
+import kr.hs.dgsw.avocatalk.data.database.entity.MealEntity
 
 @Dao
 interface MealDao{

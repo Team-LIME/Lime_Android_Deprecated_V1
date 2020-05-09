@@ -1,15 +1,12 @@
 package kr.hs.dgsw.avocatalk.view.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
-import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.databinding.ActivityRegisterBinding
-import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
 import kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver
 import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
@@ -90,14 +87,17 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             }
 
             override fun onClickShowTerms1() {
-                MessageDialog(
+                val dialog = MessageDialog(
                     getString(R.string.text_success_register),
                     getString(R.string.msg_success_register),
                     false,
                     getString(R.string.btn_ok),
                     null,
-                    this@RegisterActivity
-                ).show(supportFragmentManager)
+                    this@RegisterActivity,
+                    true
+                )
+                dialog.isCancelable = false
+                dialog.show(supportFragmentManager)
             }
 
             override fun onClickShowTerms2() {
@@ -110,8 +110,17 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     override fun observerLiveData() {
         super.observerLiveData()
         mAuthViewModel.registerSuccessEvent.observe(this, Observer {
-            logOut()
-            MessageDialog(getString(R.string.text_success_register),getString(R.string.msg_success_register),false, getString(R.string.btn_ok), null, this).show(supportFragmentManager)
+            val dialog = MessageDialog(
+                getString(R.string.text_success_register),
+                getString(R.string.msg_success_register),
+                false,
+                getString(R.string.btn_ok),
+                null,
+                this,
+                true
+            )
+            dialog.isCancelable = false
+            dialog.show(supportFragmentManager)
         })
     }
 

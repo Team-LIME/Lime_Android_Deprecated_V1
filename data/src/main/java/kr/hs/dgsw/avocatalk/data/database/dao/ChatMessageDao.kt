@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Completable
 import io.reactivex.Single
-import kr.hs.dgsw.personer.project.lime_android.database.entity.ChatMessageEntity
+import kr.hs.dgsw.avocatalk.data.database.entity.ChatMessageEntity
 
 @Dao
 interface ChatMessageDao{

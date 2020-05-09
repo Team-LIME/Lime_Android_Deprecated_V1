@@ -78,9 +78,10 @@
                 android:layout_height="match_parent"
                 android:text="@{helpBtnText}"
                 tools:text="URL이 만료되었나요?"
+                android:fontFamily="@font/default_font_light"
                 android:visibility="@{isShowHelpBtn? View.VISIBLE:View.GONE}"
                 tools:visibility="visible"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center" />
 

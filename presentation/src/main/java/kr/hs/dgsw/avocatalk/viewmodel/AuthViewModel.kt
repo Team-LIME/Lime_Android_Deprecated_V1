@@ -1,6 +1,7 @@
 package kr.hs.dgsw.avocatalk.viewmodel
 
 import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.observers.DisposableSingleObserver
 import kr.hs.dgsw.avocatalk.base.BaseViewModel
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.data.widget.SingleLiveEvent
@@ -18,15 +19,15 @@ class AuthViewModel @Inject constructor(
     private val sendEmailUseCase: SendEmailUseCase
 ): BaseViewModel() {
 
-    val loginSuccessEvent = SingleLiveEvent<Unit>()
+    val loginSuccessEvent = SingleLiveEvent<Boolean>()
     val registerSuccessEvent = SingleLiveEvent<Unit>()
     val sendEmailSuccessEvent = SingleLiveEvent<Unit>()
 
     fun sendLoginRequest(loginRequest : LoginRequest){
         addDisposable(loginUseCase.buildUseCaseObservable(LoginUseCase.Params(loginRequest)),
-            object : DisposableCompletableObserver() {
-                override fun onComplete() {
-                    loginSuccessEvent.call()
+            object : DisposableSingleObserver<Boolean>() {
+                override fun onSuccess(t: Boolean) {
+                    loginSuccessEvent.value = t
                     GlobalValue.isLoading.value = false
                 }
 
@@ -34,6 +35,7 @@ class AuthViewModel @Inject constructor(
                     GlobalValue.onErrorEvent.value = e
                     GlobalValue.isLoading.value = false
                 }
+
             })
     }
 

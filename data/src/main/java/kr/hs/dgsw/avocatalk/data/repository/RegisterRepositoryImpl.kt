@@ -14,24 +14,20 @@ import javax.inject.Inject
 class RegisterRepositoryImpl @Inject constructor(
     private val registerDataSource: RegisterDataSource,
     private val loginDataSource: LoginDataSource,
-    private val tokenDataSource: TokenDataSource,
-    private val loginRepository: LoginRepository
+    private val tokenDataSource: TokenDataSource
 ) : RegisterRepository {
-//    override fun register(registerRequest: RegisterRequest): Completable =
-//        registerDataSource.register(registerRequest).flatMap {
-//            loginRepository.login(LoginRequest(registerRequest.email!!, registerRequest.pw!!)).andThen(
-//                registerDataSource.sendEmail().ignoreElement()
-//            ).toSingleDefault(it)
-//        }.ignoreElement()
-
     override fun register(registerRequest: RegisterRequest): Completable =
-        registerDataSource.register(registerRequest).flatMap {
-            loginDataSource.login(LoginRequest(registerRequest.email!!, registerRequest.pw!!,false)).flatMap {
-                    tokenDataSource.insertToken(Token(it.token)).toSingleDefault(it) }.ignoreElement().andThen(
-                registerDataSource.sendEmail().ignoreElement()
-            ).toSingleDefault(it)
+        registerDataSource.register(registerRequest)
+            .flatMap {
+                loginDataSource.login(LoginRequest(registerRequest.email!!, registerRequest.pw!!, false)
+            ).flatMap {
+                tokenDataSource.insertToken(Token(it.token)).toSingleDefault(it)
+            }.flatMap {
+                registerDataSource.sendEmail()
+            }.flatMap {
+                tokenDataSource.deleteToken().toSingleDefault(it)
+            }
         }.ignoreElement()
 
-    override fun sendEmail(): Completable
-            = registerDataSource.sendEmail().ignoreElement()
+    override fun sendEmail(): Completable = registerDataSource.sendEmail().ignoreElement()
 }
