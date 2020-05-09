@@ -81,7 +81,8 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                             RegisterRequest(
                                 "${mBinding.email}${getString(R.string.text_school_email_address)}",
                                 mBinding.pw!!,
-                                mBinding.name!!
+                                mBinding.name!!,
+                                true
                             )
                         )
                     }
@@ -109,18 +110,9 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     override fun observerLiveData() {
         super.observerLiveData()
         mAuthViewModel.registerSuccessEvent.observe(this, Observer {
-            mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}",mBinding.pw!!))
-        })
-
-        mAuthViewModel.loginSuccessEvent.observe(this, Observer {
-            mAuthViewModel.sendEmailRequest()
-        })
-
-        mAuthViewModel.sendEmailSuccessEvent.observe(this, Observer {
             logOut()
             MessageDialog(getString(R.string.text_success_register),getString(R.string.msg_success_register),false, getString(R.string.btn_ok), null, this).show(supportFragmentManager)
         })
-
     }
 
     override fun onErrorEvent(e: Throwable) {
