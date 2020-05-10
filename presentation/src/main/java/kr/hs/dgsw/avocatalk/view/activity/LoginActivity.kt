@@ -81,6 +81,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         )
         dialog.initEventObserver(object :MessageEventObserver{
             override fun onClickOkBtn() {
+                mAuthViewModel.deleteToken()
                 dialog.dismiss()
             }
 

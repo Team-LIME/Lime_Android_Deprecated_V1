@@ -5,7 +5,6 @@ import kr.hs.dgsw.avocatalk.data.datasource.LoginDataSource
 import kr.hs.dgsw.avocatalk.data.datasource.RegisterDataSource
 import kr.hs.dgsw.avocatalk.data.datasource.TokenDataSource
 import kr.hs.dgsw.avocatalk.domain.model.Token
-import kr.hs.dgsw.avocatalk.domain.repository.LoginRepository
 import kr.hs.dgsw.avocatalk.domain.repository.RegisterRepository
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest

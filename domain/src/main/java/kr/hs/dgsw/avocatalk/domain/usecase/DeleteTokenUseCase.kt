@@ -1,0 +1,17 @@
+package kr.hs.dgsw.avocatalk.domain.usecase
+
+import io.reactivex.Completable
+import io.reactivex.Single
+import kr.hs.dgsw.avocatalk.domain.base.BaseUseCase
+import kr.hs.dgsw.avocatalk.domain.model.Token
+import kr.hs.dgsw.avocatalk.domain.repository.TokenRepository
+import javax.inject.Inject
+
+class DeleteTokenUseCase @Inject constructor(
+    private val tokenRepository: TokenRepository
+): BaseUseCase<Completable>()  {
+
+    override fun buildUseCaseObservable(): Completable {
+        return tokenRepository.deleteToken()
+    }
+}
