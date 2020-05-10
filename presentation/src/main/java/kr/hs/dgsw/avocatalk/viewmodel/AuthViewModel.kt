@@ -23,7 +23,6 @@ class AuthViewModel @Inject constructor(
     val loginSuccessEvent = SingleLiveEvent<Boolean>()
     val registerSuccessEvent = SingleLiveEvent<Unit>()
     val sendEmailSuccessEvent = SingleLiveEvent<Unit>()
-    val deleteTokenSuccessEvent = SingleLiveEvent<Unit>()
 
     fun sendLoginRequest(loginRequest : LoginRequest){
         addDisposable(loginUseCase.buildUseCaseObservable(LoginUseCase.Params(loginRequest)),
@@ -74,13 +73,9 @@ class AuthViewModel @Inject constructor(
     fun deleteToken(){
         addDisposable(deleteTokenUseCase.buildUseCaseObservable(),
             object : DisposableCompletableObserver() {
-                override fun onComplete() {
-                    deleteTokenSuccessEvent.call()
-                }
+                override fun onComplete() { }
 
-                override fun onError(e: Throwable) {
-                    GlobalValue.onErrorEvent.value = e
-                }
+                override fun onError(e: Throwable) { GlobalValue.onErrorEvent.value = e }
             })
     }
 }
