@@ -29,5 +29,8 @@ class RegisterRepositoryImpl @Inject constructor(
             }
         }.ignoreElement()
 
-    override fun sendEmail(): Completable = registerDataSource.sendEmail().ignoreElement()
+    override fun sendEmail(): Completable = registerDataSource.sendEmail()
+        .flatMap {
+            tokenDataSource.deleteToken().toSingleDefault(it)
+        }.ignoreElement()
 }

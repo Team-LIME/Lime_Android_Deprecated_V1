@@ -9,6 +9,7 @@ import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.databinding.ActivityRegisterBinding
 import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
 import kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver
+import kr.hs.dgsw.avocatalk.eventobserver.dialog.MessageEventObserver
 import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
 import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
 import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
@@ -25,8 +26,8 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
     override fun setDataBinding() {
         super.setDataBinding()
-        initBindingData(BR.globalValue, GlobalValue)
-        initBindingData(BR.eventObserver, object :
+       initBindingData(BR.globalValue, GlobalValue)
+       initBindingData(BR.eventObserver, object :
             RegisterEventObserver {
             override fun onClickRegisterBtn() {
 
@@ -87,17 +88,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             }
 
             override fun onClickShowTerms1() {
-                val dialog = MessageDialog(
-                    getString(R.string.text_success_register),
-                    getString(R.string.msg_success_register),
-                    false,
-                    getString(R.string.btn_ok),
-                    null,
-                    this@RegisterActivity,
-                    true
-                )
-                dialog.isCancelable = false
-                dialog.show(supportFragmentManager)
+                TODO("약관 Dialog 이동")
             }
 
             override fun onClickShowTerms2() {
@@ -110,18 +101,28 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     override fun observerLiveData() {
         super.observerLiveData()
         mAuthViewModel.registerSuccessEvent.observe(this, Observer {
-            val dialog = MessageDialog(
-                getString(R.string.text_success_register),
-                getString(R.string.msg_success_register),
-                false,
-                getString(R.string.btn_ok),
-                null,
-                this,
-                true
-            )
-            dialog.isCancelable = false
-            dialog.show(supportFragmentManager)
+            showDialog()
         })
+    }
+
+    private fun showDialog(){
+        val dialog = MessageDialog(
+            getString(R.string.text_success_register),
+            getString(R.string.msg_success_register),
+            getString(R.string.btn_ok),
+            false,
+            null
+        )
+        dialog.initEventObserver(object : MessageEventObserver {
+            override fun onClickOkBtn() {
+                dialog.dismiss()
+                finish()
+            }
+
+            override fun onClickHelpBtn() { }
+        })
+        dialog.isCancelable = false
+        dialog.show(supportFragmentManager)
     }
 
     override fun onErrorEvent(e: Throwable) {

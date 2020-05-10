@@ -46,7 +46,7 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
         //Todo db에 저장된 모든 정보 삭제(키보드 높이 재외), 로그인 페이지로 이동.
     }
 
-    protected fun initBindingData(br: Int,data: Any) {
+    protected fun initBindingData(br: Int,data: Any?) {
         mBinding.setVariable(br, data)
         mBinding.lifecycleOwner = this
         mBinding.executePendingBindings()
@@ -54,8 +54,7 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(
-            inflater, layoutRes(), container, false)!!
+        mBinding = DataBindingUtil.inflate(inflater, layoutRes(), container, false)!!
         return mBinding.root
     }
 

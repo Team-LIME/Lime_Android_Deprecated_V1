@@ -1,5 +1,6 @@
 package kr.hs.dgsw.avocatalk.viewmodel
 
+import android.util.Log
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableSingleObserver
 import kr.hs.dgsw.avocatalk.base.BaseViewModel

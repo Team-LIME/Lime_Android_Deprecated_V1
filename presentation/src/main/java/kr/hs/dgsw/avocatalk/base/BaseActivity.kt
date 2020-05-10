@@ -50,7 +50,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
 
     protected fun initBindingData(br: Int,data: Any) {
         mBinding.setVariable(br, data)
-        mBinding.lifecycleOwner = this
+        mBinding.lifecycleOwner = this@BaseActivity
         mBinding.executePendingBindings()
     }
 
