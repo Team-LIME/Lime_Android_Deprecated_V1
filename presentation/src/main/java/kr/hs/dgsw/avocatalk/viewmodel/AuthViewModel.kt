@@ -7,17 +7,15 @@ import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.data.widget.SingleLiveEvent
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
 import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
-import kr.hs.dgsw.avocatalk.domain.usecase.DeleteTokenUseCase
-import kr.hs.dgsw.avocatalk.domain.usecase.LoginUseCase
-import kr.hs.dgsw.avocatalk.domain.usecase.RegisterUseCase
-import kr.hs.dgsw.avocatalk.domain.usecase.SendEmailUseCase
+import kr.hs.dgsw.avocatalk.domain.usecase.*
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
     private var loginUseCase: LoginUseCase,
     private var registerUseCase: RegisterUseCase,
     private val sendEmailUseCase: SendEmailUseCase,
-    private val deleteTokenUseCase: DeleteTokenUseCase
+    private val deleteTokenUseCase: DeleteTokenUseCase,
+    private val checkTokenUseCase: CheckTokenUseCase
 ): BaseViewModel() {
 
     val loginSuccessEvent = SingleLiveEvent<Boolean>()
@@ -77,5 +75,9 @@ class AuthViewModel @Inject constructor(
 
                 override fun onError(e: Throwable) { GlobalValue.onErrorEvent.value = e }
             })
+    }
+
+    fun checkToken(disposableCompletableObserver:DisposableCompletableObserver) {
+        addDisposable(checkTokenUseCase.buildUseCaseObservable(),disposableCompletableObserver)
     }
 }

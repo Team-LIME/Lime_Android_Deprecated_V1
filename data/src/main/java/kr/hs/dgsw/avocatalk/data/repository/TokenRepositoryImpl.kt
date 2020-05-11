@@ -9,11 +9,14 @@ import kr.hs.dgsw.avocatalk.domain.repository.TokenRepository
 import javax.inject.Inject
 
 class TokenRepositoryImpl @Inject constructor(
-    private val registerDataSource: TokenDataSource
+    private val tokenDataSource: TokenDataSource
 ) : TokenRepository {
     override fun getToken(): Single<Token>
-            = registerDataSource.getToken().map { TokenMapper.mapToModel(it) }
+            = tokenDataSource.getToken().map { TokenMapper.mapToModel(it) }
 
     override fun deleteToken(): Completable
-            = registerDataSource.deleteToken()
+            = tokenDataSource.deleteToken()
+
+    override fun checkToken(): Completable
+            = tokenDataSource.checkToken().ignoreElement()
 }

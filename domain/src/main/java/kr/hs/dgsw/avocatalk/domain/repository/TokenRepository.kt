@@ -7,4 +7,5 @@ import kr.hs.dgsw.avocatalk.domain.model.Token
 interface TokenRepository {
     fun getToken(): Single<Token>
     fun deleteToken(): Completable
+    fun checkToken():Completable
 }

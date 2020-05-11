@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="eventObserver"
+            type="kr.hs.dgsw.avocatalk.eventobserver.dialog.CheckPermissionEventObserver" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".view.dialog.CheckPermissionDialog">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20pt"
+            android:layout_marginTop="20pt"
+            android:layout_marginRight="20pt"
+            android:layout_marginBottom="10pt"
+            android:fontFamily="@font/default_font_bold"
+            android:text="@string/notice_permission_1"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15pt"
+            android:layout_marginRight="15pt"
+            android:layout_marginBottom="10pt"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="3dp"
+                android:fontFamily="@font/nanum_barun_gothic_bold"
+                android:text="@string/text_camera"
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/default_font_light"
+                android:text="@string/notice_permission_2"
+                android:textAlignment="center"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15pt"
+            android:layout_marginRight="15pt"
+            android:layout_marginBottom="15pt"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="3dp"
+                android:fontFamily="@font/nanum_barun_gothic_bold"
+                android:text="@string/text_photo"
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:fontFamily="@font/default_font_light"
+                android:text="@string/notice_permission_2"
+                android:textAlignment="center"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/next_btn2"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/background_dialog_btn"
+            android:fontFamily="@font/default_font_bold"
+            android:gravity="center"
+            android:onClick="@{() -> eventObserver.onClickOkBtn()}"
+            android:text="@string/btn_ok"
+            android:textColor="@color/btnTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</layout>
