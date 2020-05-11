@@ -4,10 +4,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.EmptyResultSetException
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import dagger.android.support.DaggerAppCompatActivity
@@ -15,6 +17,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
+import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue.isLoading
 import kr.hs.dgsw.avocatalk.databinding.ActivitySplashBinding
@@ -24,6 +27,8 @@ import kr.hs.dgsw.avocatalk.view.dialog.CheckPermissionDialog
 import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
 import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
 import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
+import retrofit2.HttpException
+import java.net.UnknownHostException
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -111,16 +116,27 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         mAuthViewModel.checkToken(object : DisposableCompletableObserver() {
             override fun onComplete() {
                 isLoading.value = false
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+                moveToMainActivity()
             }
 
             override fun onError(e: Throwable) {
                 isLoading.value = false
-                logOut()
+                when (e) {
+                    is EmptyResultSetException -> logOut()
+                    is HttpException -> when(e.code()) {
+                        200 -> moveToMainActivity()
+                        else -> logOut()
+                    }
+                    is UnknownHostException -> moveToMainActivity()
+                }
             }
 
         })
+    }
+
+    private fun moveToMainActivity(){
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
     }
 
     /**

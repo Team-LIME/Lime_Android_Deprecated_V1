@@ -3,6 +3,7 @@ package kr.hs.dgsw.avocatalk.data.base.remote
 import io.reactivex.functions.Function
 import kr.hs.dgsw.avocatalk.data.network.response.Response
 import org.json.JSONObject
+import retrofit2.HttpException
 
 abstract class BaseRemote<SV> {
     abstract val service: SV
@@ -23,8 +24,7 @@ abstract class BaseRemote<SV> {
 
     private fun checkError(response: retrofit2.Response<*>) {
         if (!response.isSuccessful) {
-            val errorBody = JSONObject(response.errorBody()!!.string())
-            throw Throwable(errorBody.getString("message"))
+            throw HttpException(response)
         }
     }
 }
