@@ -117,8 +117,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
             override fun onError(e: Throwable) {
                 isLoading.value = false
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finish()
+                logOut()
             }
 
         })

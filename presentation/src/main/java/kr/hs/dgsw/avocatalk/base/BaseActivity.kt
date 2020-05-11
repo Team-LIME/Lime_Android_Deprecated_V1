@@ -1,11 +1,13 @@
 package kr.hs.dgsw.avocatalk.base
 
+import android.content.Intent
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -14,6 +16,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
+import kr.hs.dgsw.avocatalk.view.activity.LoginActivity
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
@@ -46,11 +49,13 @@ abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
 
     protected fun logOut() {
         //Todo db에 저장된 모든 정보 삭제(키보드 높이 재외), 로그인 페이지로 이동.
+        startActivity(Intent(this, LoginActivity::class.java))
+        ActivityCompat.finishAffinity(this)
     }
 
     protected fun initBindingData(br: Int,data: Any) {
         mBinding.setVariable(br, data)
-        mBinding.lifecycleOwner = this@BaseActivity
+        mBinding.lifecycleOwner = this
         mBinding.executePendingBindings()
     }
 
