@@ -1,32 +1,22 @@
 package kr.hs.dgsw.avocatalk.base
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
-import android.view.Window
-import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.FragmentManager
-import dagger.android.support.DaggerDialogFragment
+import dagger.android.support.DaggerFragment
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
-import kr.hs.dgsw.avocatalk.data.widget.SingleLiveEvent
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
 
-abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
+abstract class BaseFragment<VB : ViewDataBinding> : DaggerFragment() {
     protected lateinit var mBinding: VB
-
-    val dialogCloseEvent = SingleLiveEvent<Unit>()
 
     protected open fun observerLiveData() {
         GlobalValue.onErrorEvent.observe(this, androidx.lifecycle.Observer {
@@ -55,7 +45,8 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, layoutRes(), container, false)!!
+        mBinding = DataBindingUtil.inflate(
+                inflater, layoutRes(), container, false)!!
         return mBinding.root
     }
 
@@ -64,41 +55,6 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
 
         setDataBinding()
         observerLiveData()
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val root = RelativeLayout(activity)
-        root.layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT)
-
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(root)
-        if (dialog.window != null) {
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window!!.setLayout(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT)
-        }
-        dialog.setCanceledOnTouchOutside(true)
-        return dialog
-    }
-
-    override fun show(fragmentManager: FragmentManager, tag: String?) {
-        val transaction = fragmentManager.beginTransaction()
-        val prevFragment = fragmentManager.findFragmentByTag(getTag())
-        if (prevFragment != null) {
-            transaction.remove(prevFragment)
-        }
-        transaction.addToBackStack(null)
-        show(transaction, getTag())
-    }
-
-    override fun dismiss() {
-        super.dismiss()
-        dialogCloseEvent.call()
-        mBinding.unbind()
     }
 
     /**

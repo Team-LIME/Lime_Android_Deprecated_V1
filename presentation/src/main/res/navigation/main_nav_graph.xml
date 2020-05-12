@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/FriendsListTabFragment">
+
+    <fragment
+        android:id="@+id/FriendsListTabFragment"
+        android:name="kr.hs.dgsw.avocatalk.view.fragment.main.FriendsListTabFragment"
+        android:label="fragment_friends_list_screan"
+        tools:layout="@layout/fragment_friends_list_tab" />
+    <fragment
+        android:id="@+id/ChatRoomsListTabFragment"
+        android:name="kr.hs.dgsw.avocatalk.view.fragment.main.ChatRoomsListTabFragment"
+        android:label="fragment_chat_list_screan"
+        tools:layout="@layout/fragment_chat_rooms_list_tab" />
+    <fragment
+        android:id="@+id/MoreTabFragment"
+        android:name="kr.hs.dgsw.avocatalk.view.fragment.main.MoreTabFragment"
+        android:label="fragment_more_screan"
+        tools:layout="@layout/fragment_more_tab" />
+</navigation>
