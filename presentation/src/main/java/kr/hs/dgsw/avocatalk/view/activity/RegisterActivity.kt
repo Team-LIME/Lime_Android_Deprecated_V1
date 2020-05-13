@@ -16,7 +16,7 @@ import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
 import javax.inject.Inject
 
-class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
+class RegisterActivity : BaseActivity<ActivityRegisterBinding>(), RegisterEventObserver {
 
     @Inject
     lateinit var mAuthViewModelFactory: AuthViewModelFactory
@@ -26,76 +26,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
     override fun setDataBinding() {
         super.setDataBinding()
-       initBindingData(BR.globalValue, GlobalValue)
-       initBindingData(BR.eventObserver, object :
-            RegisterEventObserver {
-            override fun onClickRegisterBtn() {
-
-                mBinding.inputLayoutName.error  = null
-                mBinding.inputLayoutEmail.error  = null
-                mBinding.inputLayoutPassword.error  = null
-                mBinding.inputLayoutCheckPassword.error  = null
-                mBinding.useAgreementCheckBox.error  = null
-
-
-                when {
-                    mBinding.name.isNullOrBlank() -> {
-                        mBinding.inputLayoutName.error =
-                            getString(R.string.error_msg_empty_name)
-                        mBinding.inputLayoutName.requestFocus()
-                    }
-
-                    mBinding.email.isNullOrBlank() -> {
-                        mBinding.inputLayoutEmail.error =
-                            getString(R.string.error_msg_empty_email)
-                        mBinding.inputLayoutEmail.requestFocus()
-                    }
-
-                    mBinding.pw.isNullOrBlank() -> {
-                        mBinding.inputLayoutPassword.error =
-                            getString(R.string.error_msg_empty_pw)
-                        mBinding.inputLayoutPassword.requestFocus()
-                    }
-
-                    mBinding.checkPw.isNullOrBlank() -> {
-                        mBinding.inputLayoutCheckPassword.error =
-                            getString(R.string.error_msg_empty_pw)
-                        mBinding.inputLayoutCheckPassword.requestFocus()
-                    }
-
-                    !mBinding.checkPw.equals(mBinding.pw) -> {
-                        mBinding.inputLayoutCheckPassword.error =
-                            getString(R.string.error_msg_not_match_pw)
-                        mBinding.inputLayoutCheckPassword.requestFocus()
-                    }
-
-                    !mBinding.useAgreementCheckBox.isChecked -> {
-                        mBinding.useAgreementCheckBox.error = "동의점요"
-                        mBinding.useAgreementCheckBox.requestFocus()
-                    }
-
-                    else -> {
-                        mAuthViewModel.sendRegisterRequest(
-                            RegisterRequest(
-                                "${mBinding.email}${getString(R.string.text_school_email_address)}",
-                                mBinding.pw!!,
-                                mBinding.name!!,
-                                true
-                            )
-                        )
-                    }
-                }
-            }
-
-            override fun onClickShowTerms1() {
-                TODO("약관 Dialog 이동")
-            }
-
-            override fun onClickShowTerms2() {
-                TODO("약관 Dialog 이동")
-            }
-
-        })
+        initBindingData(BR.eventObserver, this)
     }
 
     override fun observerLiveData() {
@@ -163,5 +94,72 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                 mBinding.inputLayoutPassword.error = null
             }
         })
+    }
+
+
+    override fun onClickRegisterBtn() {
+
+        mBinding.inputLayoutName.error  = null
+        mBinding.inputLayoutEmail.error  = null
+        mBinding.inputLayoutPassword.error  = null
+        mBinding.inputLayoutCheckPassword.error  = null
+        mBinding.useAgreementCheckBox.error  = null
+
+
+        when {
+            mBinding.name.isNullOrBlank() -> {
+                mBinding.inputLayoutName.error =
+                    getString(R.string.error_msg_empty_name)
+                mBinding.inputLayoutName.requestFocus()
+            }
+
+            mBinding.email.isNullOrBlank() -> {
+                mBinding.inputLayoutEmail.error =
+                    getString(R.string.error_msg_empty_email)
+                mBinding.inputLayoutEmail.requestFocus()
+            }
+
+            mBinding.pw.isNullOrBlank() -> {
+                mBinding.inputLayoutPassword.error =
+                    getString(R.string.error_msg_empty_pw)
+                mBinding.inputLayoutPassword.requestFocus()
+            }
+
+            mBinding.checkPw.isNullOrBlank() -> {
+                mBinding.inputLayoutCheckPassword.error =
+                    getString(R.string.error_msg_empty_pw)
+                mBinding.inputLayoutCheckPassword.requestFocus()
+            }
+
+            !mBinding.checkPw.equals(mBinding.pw) -> {
+                mBinding.inputLayoutCheckPassword.error =
+                    getString(R.string.error_msg_not_match_pw)
+                mBinding.inputLayoutCheckPassword.requestFocus()
+            }
+
+            !mBinding.useAgreementCheckBox.isChecked -> {
+                mBinding.useAgreementCheckBox.error = "동의점요"
+                mBinding.useAgreementCheckBox.requestFocus()
+            }
+
+            else -> {
+                mAuthViewModel.sendRegisterRequest(
+                    RegisterRequest(
+                        "${mBinding.email}${getString(R.string.text_school_email_address)}",
+                        mBinding.pw!!,
+                        mBinding.name!!,
+                        true
+                    )
+                )
+            }
+        }
+    }
+
+    override fun onClickShowTerms1() {
+        TODO("약관 Dialog 이동")
+    }
+
+    override fun onClickShowTerms2() {
+        TODO("약관 Dialog 이동")
     }
 }

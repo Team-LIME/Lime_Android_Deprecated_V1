@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver" />
-
-        <variable
             name="globalValue"
             type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+
+        <variable
+            name="eventObserver"
+            type="kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver" />
 
         <variable
             name="email"

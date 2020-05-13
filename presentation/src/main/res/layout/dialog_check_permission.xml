@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+
+        <variable
             name="eventObserver"
             type="kr.hs.dgsw.avocatalk.eventobserver.dialog.CheckPermissionEventObserver" />
     </data>

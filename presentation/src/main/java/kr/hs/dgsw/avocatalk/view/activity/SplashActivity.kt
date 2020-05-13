@@ -32,7 +32,7 @@ import java.net.UnknownHostException
 import java.util.ArrayList
 import javax.inject.Inject
 
-class SplashActivity : BaseActivity<ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>(), PermissionListener {
 
     @Inject
     lateinit var mAuthViewModelFactory: AuthViewModelFactory
@@ -60,36 +60,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }, SPLASH_TIME_OUT!!)
     }
 
-    private val permissionListener : PermissionListener = object : PermissionListener {
-        override fun onPermissionGranted() {
-            messageDialog_success.initEventObserver(object :MessageEventObserver{
-                override fun onClickHelpBtn() { }
-
-                override fun onClickOkBtn() {
-                    messageDialog_success.dismiss()
-                    checkPermissionDialog.dismiss()
-                    checkToken()
-                }
-            })
-            messageDialog_success.isCancelable = false
-            messageDialog_success.show(supportFragmentManager)
-        }
-
-        override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-
-            messageDialog_fail.initEventObserver(object :MessageEventObserver{
-                override fun onClickHelpBtn() { }
-
-                override fun onClickOkBtn() {
-                    messageDialog_fail.dismiss()
-                }
-
-            })
-            messageDialog_fail.isCancelable = false
-            messageDialog_fail.show(supportFragmentManager)
-        }
-
-    }
 
     private fun showPermissionNoticeDialog(){
         checkPermissionDialog.initEventObserver(object : CheckPermissionEventObserver {
@@ -103,12 +73,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     private fun showPermissionCheckDialog() {
         TedPermission.with(this)
-            .setPermissionListener(permissionListener)
+            .setPermissionListener(this)
             .setPermissions(
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ).check()
+    }
+
+
+    /**
+     *  true : 권한허용O
+     *  false : 권한허용X
+     */
+    private fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun checkToken(){
@@ -122,7 +103,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             override fun onError(e: Throwable) {
                 isLoading.value = false
                 when (e) {
-                    is EmptyResultSetException -> logOut()
+                    is TokenException -> logOut()
                     is HttpException -> when(e.code()) {
                         200 -> moveToMainActivity()
                         else -> logOut()
@@ -134,18 +115,39 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         })
     }
 
+
     private fun moveToMainActivity(){
         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         finish()
     }
 
-    /**
-     *  true : 권한허용O
-     *  false : 권한허용X
-     */
-    private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+    override fun onPermissionGranted() {
+        messageDialog_success.initEventObserver(object :MessageEventObserver{
+            override fun onClickHelpBtn() { }
+
+            override fun onClickOkBtn() {
+                messageDialog_success.dismiss()
+                checkPermissionDialog.dismiss()
+                checkToken()
+            }
+        })
+        messageDialog_success.isCancelable = false
+        messageDialog_success.show(supportFragmentManager)
     }
+
+    override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+
+        messageDialog_fail.initEventObserver(object :MessageEventObserver{
+            override fun onClickHelpBtn() { }
+
+            override fun onClickOkBtn() {
+                messageDialog_fail.dismiss()
+            }
+
+        })
+        messageDialog_fail.isCancelable = false
+        messageDialog_fail.show(supportFragmentManager)
+    }
+
 }

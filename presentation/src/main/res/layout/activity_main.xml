@@ -21,6 +21,7 @@
         app:menu="@menu/main_navigation"
         android:id="@+id/main_bottom_navigation"
         android:layout_width="match_parent"
+        app:labelVisibilityMode="unlabeled"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -17,6 +17,7 @@ class AuthViewModel @Inject constructor(
     private val deleteTokenUseCase: DeleteTokenUseCase,
     private val checkTokenUseCase: CheckTokenUseCase
 ): BaseViewModel() {
+    
 
     val loginSuccessEvent = SingleLiveEvent<Boolean>()
     val registerSuccessEvent = SingleLiveEvent<Unit>()

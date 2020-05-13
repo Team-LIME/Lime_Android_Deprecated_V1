@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/FriendsListTabFragment"
-        android:icon="@drawable/ic_friends_tab"
+        android:icon="@drawable/ic_friends_tab_line"
         android:title="@string/title_friend_tab"/>
 
     <item
         android:id="@+id/ChatRoomsListTabFragment"
-        android:icon="@drawable/ic_chatting_tab"
+        android:icon="@drawable/ic_chatting_tab_line"
         android:title="@string/title_chatting_tab"/>
 
     <item
         android:id="@+id/MoreTabFragment"
-        android:icon="@drawable/ic_more_tab"
+        android:icon="@drawable/ic_more_tab_line"
         android:title="@string/title_more_tab"/>
 
 </menu>

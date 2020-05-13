@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import dagger.android.support.DaggerFragment
+import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
@@ -24,7 +25,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : DaggerFragment() {
         })
     }
 
-    protected open fun setDataBinding() {}
+    protected open fun setDataBinding() {
+        initBindingData(BR.globalValue, GlobalValue)
+    }
 
     protected open fun onErrorEvent(e: Throwable) {
         if (e is TokenException) {

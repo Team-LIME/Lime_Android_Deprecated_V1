@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+
+        <variable
             name="eventObserver"
             type="kr.hs.dgsw.avocatalk.eventobserver.fragment.main.FriendsListTabEventObserver" />
     </data>

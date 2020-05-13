@@ -7,6 +7,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.hs.dgsw.avocatalk.R
 
+
 class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +16,34 @@ class MainActivity : DaggerAppCompatActivity() {
         initUI()
     }
 
+
     private fun initUI(){
-        NavigationUI.setupWithNavController(main_bottom_navigation, findNavController(R.id.nav_host))
+        val mainBottomNavigation = main_bottom_navigation
+        mainBottomNavigation.itemIconTintList = null
+
+        mainBottomNavigation.menu.getItem(0).setIcon(R.drawable.ic_friends_tab)
+        mainBottomNavigation.menu.getItem(1).setIcon(R.drawable.ic_chatting_tab_line)
+        mainBottomNavigation.menu.getItem(2).setIcon(R.drawable.ic_more_tab_line)
+
+        NavigationUI.setupWithNavController(mainBottomNavigation, findNavController(R.id.nav_host))
+
+        findNavController(R.id.nav_host).addOnDestinationChangedListener { controller, destination, arguments ->
+            mainBottomNavigation.menu.getItem(0).setIcon(R.drawable.ic_friends_tab_line)
+            mainBottomNavigation.menu.getItem(1).setIcon(R.drawable.ic_chatting_tab_line)
+            mainBottomNavigation.menu.getItem(2).setIcon(R.drawable.ic_more_tab_line)
+
+            when (destination.id) {
+                R.id.FriendsListTabFragment ->{
+                    mainBottomNavigation.menu.getItem(0).setIcon(R.drawable.ic_friends_tab)
+                }
+                R.id.ChatRoomsListTabFragment->{
+                    mainBottomNavigation.menu.getItem(1).setIcon(R.drawable.ic_chatting_tab)
+                }
+                R.id.MoreTabFragment ->{
+                    mainBottomNavigation.menu.getItem(2).setIcon(R.drawable.ic_more_tab)
+                }
+            }
+        }
+
     }
 }

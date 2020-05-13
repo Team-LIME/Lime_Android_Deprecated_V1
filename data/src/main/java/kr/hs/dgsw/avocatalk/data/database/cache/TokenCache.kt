@@ -6,6 +6,7 @@ import io.reactivex.Single
 import kr.hs.dgsw.avocatalk.data.base.BaseCache
 import kr.hs.dgsw.avocatalk.data.database.dao.TokenDao
 import kr.hs.dgsw.avocatalk.data.database.entity.TokenEntity
+import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import javax.inject.Inject
 
 class TokenCache @Inject constructor(application: Application) : BaseCache(application) {
@@ -16,5 +17,5 @@ class TokenCache @Inject constructor(application: Application) : BaseCache(appli
 
     fun deleteToken(): Completable = tokenDao.deleteToken()
 
-    fun getToken(): Single<TokenEntity> = tokenDao.getToken()
+    fun getToken(): Single<TokenEntity> = tokenDao.getToken().onErrorResumeNext { Single.error(TokenException("EmptyToken")) }
 }

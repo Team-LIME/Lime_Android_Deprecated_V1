@@ -13,6 +13,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerAppCompatActivity
+import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
@@ -24,7 +25,10 @@ import java.util.*
 abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
     protected lateinit var mBinding: VB
 
-    protected open fun setDataBinding() {}
+    protected open fun setDataBinding() {
+        initBindingData(BR.globalValue, GlobalValue)
+    }
+
     protected open fun observerLiveData() {
         GlobalValue.onErrorEvent.observe(this, androidx.lifecycle.Observer {
             onErrorEvent(it)

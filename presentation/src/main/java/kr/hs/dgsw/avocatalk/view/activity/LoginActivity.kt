@@ -22,7 +22,7 @@ import retrofit2.HttpException
 import javax.crypto.interfaces.PBEKey
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity<ActivityLoginBinding>() {
+class LoginActivity : BaseActivity<ActivityLoginBinding>(),LoginEventObserver {
 
     @Inject
     lateinit var mAuthViewModelFactory: AuthViewModelFactory
@@ -35,28 +35,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun setDataBinding() {
         super.setDataBinding()
 
-        initBindingData(BR.globalValue, GlobalValue)
         initBindingData(BR.email, "")
         initBindingData(BR.pw, "")
+        initBindingData(BR.eventObserver, this)
 
-        initBindingData(BR.eventObserver, object :
-            LoginEventObserver {
-
-            override fun onClickLoginBtn() {
-                when {
-                    mBinding.email.isNullOrBlank() ->  mBinding.inputLayoutEmail.error = getString(R.string.error_msg_empty_email)
-                    mBinding.pw.isNullOrBlank() -> mBinding.inputLayoutPassword.error = getString(R.string.error_msg_empty_pw)
-                    else -> {
-                        mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}", mBinding.pw!!,true))
-                        GlobalValue.isLoading.value = true
-                    }
-                }
-            }
-
-            override fun onClickRegisterBtn() {
-                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
-            }
-        })
     }
 
     override fun observerLiveData() {
@@ -119,5 +101,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 mBinding.inputLayoutPassword.error = null
             }
         })
+    }
+
+
+    override fun onClickLoginBtn() {
+        when {
+            mBinding.email.isNullOrBlank() ->  mBinding.inputLayoutEmail.error = getString(R.string.error_msg_empty_email)
+            mBinding.pw.isNullOrBlank() -> mBinding.inputLayoutPassword.error = getString(R.string.error_msg_empty_pw)
+            else -> {
+                mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}", mBinding.pw!!,true))
+                GlobalValue.isLoading.value = true
+            }
+        }
+    }
+
+    override fun onClickRegisterBtn() {
+        startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
     }
 }

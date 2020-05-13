@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import dagger.android.support.DaggerDialogFragment
+import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
@@ -34,7 +35,9 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
         })
     }
 
-    protected open fun setDataBinding() {}
+    protected open fun setDataBinding() {
+        initBindingData(BR.globalValue, GlobalValue)
+    }
 
     protected open fun onErrorEvent(e: Throwable) {
         if (e is TokenException) {
