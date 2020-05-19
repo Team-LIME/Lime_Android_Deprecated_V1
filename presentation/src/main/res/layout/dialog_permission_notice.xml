@@ -7,12 +7,12 @@
         <import type="android.view.View" />
 
         <variable
-            name="globalValue"
-            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+            name="viewModel"
+            type="kr.hs.dgsw.avocatalk.viewmodel.dialog.PermissionNoticeViewModel" />
 
         <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.dialog.CheckPermissionEventObserver" />
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
     </data>
 
     <LinearLayout
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".view.dialog.CheckPermissionDialog">
+        tools:context=".view.dialog.PermissionNoticeDialog">
 
 
         <TextView
@@ -109,7 +109,7 @@
             android:background="@drawable/background_dialog_btn"
             android:fontFamily="@font/default_font_bold"
             android:gravity="center"
-            android:onClick="@{() -> eventObserver.onClickOkBtn()}"
+            android:onClick="@{() -> viewModel.onClickOkBtn()}"
             android:text="@string/btn_ok"
             android:textColor="@color/btnTextColor"
             android:textSize="16sp"

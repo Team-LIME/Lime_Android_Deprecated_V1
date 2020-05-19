@@ -4,19 +4,22 @@ import android.content.Context
 
 import androidx.room.Database
 import androidx.room.Room
+import kr.hs.dgsw.avocatalk.data.database.dao.MemberDao
 import kr.hs.dgsw.avocatalk.data.database.dao.UserDao
 import kr.hs.dgsw.avocatalk.data.database.dao.TokenDao
+import kr.hs.dgsw.avocatalk.data.database.entity.MemberEntity
 import kr.hs.dgsw.avocatalk.data.database.entity.UserEntity
 import kr.hs.dgsw.avocatalk.data.database.entity.TokenEntity
 
-@Database(entities = [TokenEntity::class, UserEntity::class],
+@Database(entities = [TokenEntity::class, UserEntity::class, MemberEntity::class],
     version = 1, exportSchema = false
 )
 abstract class RoomDatabase : androidx.room.RoomDatabase() {
 
     abstract fun tokenDao(): TokenDao
 
-    abstract fun memberDao(): UserDao
+    abstract fun userDao(): UserDao
+    abstract fun memberDao(): MemberDao
 
     companion object {
 

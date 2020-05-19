@@ -6,6 +6,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import kr.hs.dgsw.avocatalk.data.network.interceptor.ErrorResponseInterceptor
+import kr.hs.dgsw.avocatalk.data.network.interceptor.NoConnectionInterceptor
 import kr.hs.dgsw.avocatalk.data.network.interceptor.TokenInterceptor
 import kr.hs.dgsw.avocatalk.data.util.Constants
 import okhttp3.OkHttpClient
@@ -29,17 +30,17 @@ class NetWorkModule {
     @Provides
     @Singleton
     @Named("HTTP")
-    fun provideHttpClient(tokenInterceptor: TokenInterceptor): OkHttpClient {
+    fun provideHttpClient(tokenInterceptor: TokenInterceptor, httpResponseInterceptor: ErrorResponseInterceptor, noConnectionInterceptor: NoConnectionInterceptor): OkHttpClient {
 
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        val httpResponseInterceptor = ErrorResponseInterceptor()
 
         val okhttpBuilder = OkHttpClient().newBuilder()
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(tokenInterceptor)
             .addInterceptor(httpResponseInterceptor)
+            .addInterceptor(noConnectionInterceptor)
+
         return okhttpBuilder.build()
     }
 

@@ -12,53 +12,53 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
-import kr.hs.dgsw.avocatalk.data.exception.TokenException
-import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
+import kr.hs.dgsw.avocatalk.data.exception.NoConnectivityException
+import kr.hs.dgsw.avocatalk.data.exception.NoInternetException
 import kr.hs.dgsw.avocatalk.view.activity.LoginActivity
+import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
 
-abstract class BaseActivity<VB : ViewDataBinding> : DaggerAppCompatActivity() {
+abstract class BaseActivity<VB : ViewDataBinding, VM: BaseViewModel> : DaggerAppCompatActivity() {
     protected lateinit var mBinding: VB
+    protected lateinit var mViewModel: VM
 
-    protected open fun setDataBinding() {
-        initBindingData(BR.globalValue, GlobalValue)
-    }
+    protected abstract val viewModel: VM
 
-    protected open fun observerLiveData() {
-        GlobalValue.onErrorEvent.observe(this, androidx.lifecycle.Observer {
-            onErrorEvent(it)
+    protected open fun observerViewModel(){
+        GlobalValue.logoutEvent.observe(this, androidx.lifecycle.Observer {
+            ActivityCompat.finishAffinity(this)
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        })
+        GlobalValue.disconnectInternetEvent.observe(this, androidx.lifecycle.Observer {
+            if(it is NoConnectivityException)
+                Snackbar.make(window.decorView.rootView, "인터넷 연결이 끊겼습니다. WI-FI나 데이터 연결을 확인해주세요", Snackbar.LENGTH_LONG).show()
+            else if(it is NoInternetException)
+                Snackbar.make(window.decorView.rootView, "서버와의 연결이 끊겼습니다. WI-FI나 데이터 연결을 확인해주세요", Snackbar.LENGTH_LONG).show()
         })
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        mViewModel.onErrorEvent.observe(this, androidx.lifecycle.Observer { onErrorEvent(it) })
-        //Todo onErrorEvent 처리.
-        if (!::mBinding.isInitialized) mBinding = DataBindingUtil.setContentView(this, layoutRes())
-        setDataBinding()
-        observerLiveData()
+
+        performDataBinding()
+        observerViewModel()
     }
 
-    protected open fun onErrorEvent(e: Throwable) {
-        if (e is TokenException) {
-            logOut()
-            return
-        }
-    }
-
-    protected fun logOut() {
-        //Todo db에 저장된 모든 정보 삭제(키보드 높이 재외), 로그인 페이지로 이동.
-        startActivity(Intent(this, LoginActivity::class.java))
-        ActivityCompat.finishAffinity(this)
-    }
-
-    protected fun initBindingData(br: Int,data: Any) {
-        mBinding.setVariable(br, data)
+    private fun performDataBinding() {
+        mBinding = DataBindingUtil.setContentView(this, layoutRes())
+        mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
+        mBinding.setVariable(BR.viewModel, mViewModel)
+        mBinding.setVariable(BR.globalValue,
+            GlobalValue
+        )
         mBinding.lifecycleOwner = this
         mBinding.executePendingBindings()
     }

@@ -10,11 +10,11 @@ import javax.inject.Inject
 
 class UserCache @Inject constructor(application: Application) : BaseCache(application) {
 
-    private val userDao: UserDao = database.memberDao()
+    private val userDao: UserDao = database.userDao()
 
     fun insertUser(userEntity: UserEntity): Completable = userDao.insert(userEntity)
 
-    fun deleteAllUser(): Completable = userDao.deleteAllUser()
+    fun deleteUser(): Completable = userDao.deleteUser()
 
-    fun getUser(userEmail:String): Single<UserEntity> = userDao.getUser(userEmail)
+    fun getUser(): Single<UserEntity> = userDao.getUser()
 }

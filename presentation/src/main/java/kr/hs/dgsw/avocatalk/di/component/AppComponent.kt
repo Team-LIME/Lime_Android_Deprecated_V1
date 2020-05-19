@@ -9,6 +9,7 @@ import kr.hs.dgsw.avocatalk.di.module.*
 import kr.hs.dgsw.avocatalk.widget.AvocatalkApplication
 import javax.inject.Singleton
 
+
 @Singleton
 @Component(
     modules = [

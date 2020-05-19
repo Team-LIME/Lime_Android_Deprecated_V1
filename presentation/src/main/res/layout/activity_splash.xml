@@ -6,6 +6,11 @@
         <import type="android.view.View"/>
 
         <variable
+            name="viewModel"
+            type="kr.hs.dgsw.avocatalk.viewmodel.activity.SplashViewModel" />
+
+
+        <variable
             name="globalValue"
             type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
     </data>

@@ -5,6 +5,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import kr.hs.dgsw.avocatalk.widget.AvocatalkApplication
 import javax.inject.Singleton
 
 @Module
@@ -21,4 +22,5 @@ class AppModule {
     @Singleton
     @Provides
     fun bindAny(): Any = Any()
+
 }

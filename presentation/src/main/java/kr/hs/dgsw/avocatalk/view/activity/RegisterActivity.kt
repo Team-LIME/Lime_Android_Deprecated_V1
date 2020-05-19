@@ -2,71 +2,51 @@ package kr.hs.dgsw.avocatalk.view.activity
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
-import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.databinding.ActivityRegisterBinding
-import kr.hs.dgsw.avocatalk.domain.request.RegisterRequest
-import kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver
-import kr.hs.dgsw.avocatalk.eventobserver.dialog.MessageEventObserver
+import kr.hs.dgsw.avocatalk.eventObserver.MessageDialogEventObserver
 import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
-import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
-import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
+import kr.hs.dgsw.avocatalk.viewmodel.activity.RegisterViewModel
+import kr.hs.dgsw.avocatalk.viewmodelfactory.activity.RegisterViewModelFactory
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
+import retrofit2.HttpException
 import javax.inject.Inject
 
-class RegisterActivity : BaseActivity<ActivityRegisterBinding>(), RegisterEventObserver {
+class RegisterActivity : BaseActivity<ActivityRegisterBinding,RegisterViewModel>() {
 
     @Inject
-    lateinit var mAuthViewModelFactory: AuthViewModelFactory
+    lateinit var viewModelFactory: RegisterViewModelFactory
 
-    private val mAuthViewModel: AuthViewModel
-        get() = getViewModel(mAuthViewModelFactory)
-
-    override fun setDataBinding() {
-        super.setDataBinding()
-        initBindingData(BR.eventObserver, this)
-    }
-
-    override fun observerLiveData() {
-        super.observerLiveData()
-        mAuthViewModel.registerSuccessEvent.observe(this, Observer {
-            showDialog()
-        })
-    }
-
-    private fun showDialog(){
-        val dialog = MessageDialog(
-            getString(R.string.text_success_register),
-            getString(R.string.msg_success_register),
-            getString(R.string.btn_ok),
-            false,
-            null
-        )
-        dialog.initEventObserver(object : MessageEventObserver {
-            override fun onClickOkBtn() {
-                dialog.dismiss()
-                finish()
-            }
-
-            override fun onClickHelpBtn() { }
-        })
-        dialog.isCancelable = false
-        dialog.show(supportFragmentManager)
-    }
-
-    override fun onErrorEvent(e: Throwable) {
-        super.onErrorEvent(e)
-        if(e.message.equals("중복된 이메일")){
-            mBinding.inputLayoutEmail.error = getString(R.string.msg_of_no_use_email)
-            mBinding.inputLayoutEmail.requestFocus()
-        }
-    }
+    override val viewModel: RegisterViewModel
+        get() = getViewModel(viewModelFactory)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initUI()
+    }
+
+    override fun observerViewModel() {
+        super.observerViewModel()
+
+        viewModel.onErrorEvent.observe(this, Observer {
+            if(it is HttpException && it.code() == 409){
+                mBinding.inputLayoutEmail.error = getString(R.string.msg_of_no_use_email)
+                mBinding.inputLayoutEmail.requestFocus()
+            }
+        })
+        viewModel.onClickShowTerms1Event.observe(this, Observer {
+            TODO("약관 Dialog 이동")
+        })
+        viewModel.onClickShowTerms2Event.observe(this, Observer {
+            TODO("약관 Dialog 이동")
+        })
+        viewModel.onClickRegisterBtnEvent.observe(this, Observer {
+            onClickRegisterBtn()
+        })
+        viewModel.registerSuccessEvent.observe(this, Observer {
+            showDialog()
+        })
     }
 
     private fun initUI(){
@@ -96,8 +76,27 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>(), RegisterEventO
         })
     }
 
+    private fun showDialog(){
+        val dialog = MessageDialog(
+            getString(R.string.text_success_register),
+            getString(R.string.msg_success_register),
+            getString(R.string.btn_ok),
+            false,
+            null
+        )
+        dialog.setEventObserver(object : MessageDialogEventObserver {
+            override fun onClickOkBtn() {
+                dialog.dismiss()
+                finish()
+            }
 
-    override fun onClickRegisterBtn() {
+            override fun onClickHelpBtn() { }
+        })
+        dialog.isCancelable = false
+        dialog.show(supportFragmentManager, "")
+    }
+
+    private fun onClickRegisterBtn() {
 
         mBinding.inputLayoutName.error  = null
         mBinding.inputLayoutEmail.error  = null
@@ -107,31 +106,31 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>(), RegisterEventO
 
 
         when {
-            mBinding.name.isNullOrBlank() -> {
+            viewModel.name.value.isNullOrBlank() -> {
                 mBinding.inputLayoutName.error =
                     getString(R.string.error_msg_empty_name)
                 mBinding.inputLayoutName.requestFocus()
             }
 
-            mBinding.email.isNullOrBlank() -> {
+            viewModel.email.value.isNullOrBlank() -> {
                 mBinding.inputLayoutEmail.error =
                     getString(R.string.error_msg_empty_email)
                 mBinding.inputLayoutEmail.requestFocus()
             }
 
-            mBinding.pw.isNullOrBlank() -> {
+            viewModel.pw.value.isNullOrBlank() -> {
                 mBinding.inputLayoutPassword.error =
                     getString(R.string.error_msg_empty_pw)
                 mBinding.inputLayoutPassword.requestFocus()
             }
 
-            mBinding.checkPw.isNullOrBlank() -> {
+            viewModel.checkPw.value.isNullOrBlank() -> {
                 mBinding.inputLayoutCheckPassword.error =
                     getString(R.string.error_msg_empty_pw)
                 mBinding.inputLayoutCheckPassword.requestFocus()
             }
 
-            !mBinding.checkPw.equals(mBinding.pw) -> {
+            !viewModel.checkPw.value.equals(viewModel.pw.value) -> {
                 mBinding.inputLayoutCheckPassword.error =
                     getString(R.string.error_msg_not_match_pw)
                 mBinding.inputLayoutCheckPassword.requestFocus()
@@ -142,24 +141,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>(), RegisterEventO
                 mBinding.useAgreementCheckBox.requestFocus()
             }
 
-            else -> {
-                mAuthViewModel.sendRegisterRequest(
-                    RegisterRequest(
-                        "${mBinding.email}${getString(R.string.text_school_email_address)}",
-                        mBinding.pw!!,
-                        mBinding.name!!,
-                        true
-                    )
-                )
-            }
+            else -> { viewModel.sendRegisterRequest() }
         }
-    }
-
-    override fun onClickShowTerms1() {
-        TODO("약관 Dialog 이동")
-    }
-
-    override fun onClickShowTerms2() {
-        TODO("약관 Dialog 이동")
     }
 }

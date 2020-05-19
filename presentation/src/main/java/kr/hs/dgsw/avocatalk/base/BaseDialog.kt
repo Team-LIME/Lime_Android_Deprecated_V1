@@ -1,6 +1,7 @@
 package kr.hs.dgsw.avocatalk.base
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,69 +12,85 @@ import android.view.ViewGroup.LayoutParams
 import android.view.Window
 import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerDialogFragment
 import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
+import kr.hs.dgsw.avocatalk.data.exception.NoConnectivityException
+import kr.hs.dgsw.avocatalk.data.exception.NoInternetException
 import kr.hs.dgsw.avocatalk.data.exception.TokenException
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.data.widget.SingleLiveEvent
+import kr.hs.dgsw.avocatalk.view.activity.LoginActivity
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
 
-abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
+abstract class BaseDialog<VB : ViewDataBinding, VM : BaseViewModel> : DaggerDialogFragment() {
     protected lateinit var mBinding: VB
+    protected lateinit var mViewModel: VM
 
-    val dialogCloseEvent = SingleLiveEvent<Unit>()
+    val dialogCloseEvent =
+        SingleLiveEvent<Unit>()
 
-    protected open fun observerLiveData() {
-        GlobalValue.onErrorEvent.observe(this, androidx.lifecycle.Observer {
-            onErrorEvent(it)
+    protected abstract val viewModel: VM
+
+    protected open fun observerViewModel(){
+        GlobalValue.logoutEvent.observe(requireActivity(), androidx.lifecycle.Observer {
+            ActivityCompat.finishAffinity(requireActivity())
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().finish()
+        })
+
+        GlobalValue.disconnectInternetEvent.observe(this, androidx.lifecycle.Observer {
+            if(it is NoConnectivityException)
+                Snackbar.make(requireView(), "인터넷 연결이 끊겼습니다. WI-FI나 데이터 연결을 확인해주세요", Snackbar.LENGTH_LONG).show()
+            else if(it is NoInternetException)
+                Snackbar.make(requireView(), "서버와의 연결이 끊겼습니다. WI-FI나 데이터 연결을 확인해주세요", Snackbar.LENGTH_LONG).show()
         })
     }
 
-    protected open fun setDataBinding() {
-        initBindingData(BR.globalValue, GlobalValue)
-    }
 
-    protected open fun onErrorEvent(e: Throwable) {
-        if (e is TokenException) {
-            logOut()
-            return
-        }
-    }
-
-    protected fun logOut() {
-        //Todo db에 저장된 모든 정보 삭제(키보드 높이 재외), 로그인 페이지로 이동.
-    }
-
-    protected fun initBindingData(br: Int,data: Any?) {
-        mBinding.setVariable(br, data)
-        mBinding.lifecycleOwner = this
-        mBinding.executePendingBindings()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, layoutRes(), container, false)!!
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mBinding = DataBindingUtil.inflate(
+            inflater, layoutRes(), container, false
+        )!!
         return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUp()
 
-        setDataBinding()
-        observerLiveData()
+        observerViewModel()
+    }
+
+    private fun setUp() {
+        mViewModel = if (::mViewModel.isInitialized) mViewModel else viewModel
+        mBinding.setVariable(BR.viewModel, mViewModel)
+        mBinding.setVariable(BR.globalValue,
+            GlobalValue
+        )
+        mBinding.lifecycleOwner = this
+        mBinding.executePendingBindings()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val root = RelativeLayout(activity)
         root.layoutParams = LayoutParams(
             LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT)
+            LayoutParams.WRAP_CONTENT
+        )
 
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -82,7 +99,8 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.window!!.setLayout(
                 LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT)
+                LayoutParams.WRAP_CONTENT
+            )
         }
         dialog.setCanceledOnTouchOutside(true)
         return dialog
@@ -111,9 +129,11 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
      */
     @LayoutRes
     private fun layoutRes(): Int {
-        val split = ((Objects.requireNonNull<Type>(javaClass.genericSuperclass) as ParameterizedType).actualTypeArguments[0] as Class<*>)
-            .simpleName.replace("Binding$".toRegex(), "").split("(?<=.)(?=\\p{Upper})".toRegex())
-            .dropLastWhile { it.isEmpty() }.toTypedArray()
+        val split =
+            ((Objects.requireNonNull<Type>(javaClass.genericSuperclass) as ParameterizedType).actualTypeArguments[0] as Class<*>)
+                .simpleName.replace("Binding$".toRegex(), "")
+                .split("(?<=.)(?=\\p{Upper})".toRegex())
+                .dropLastWhile { it.isEmpty() }.toTypedArray()
 
         val name = StringBuilder()
 
@@ -133,4 +153,10 @@ abstract class BaseDialog<VB : ViewDataBinding> : DaggerDialogFragment() {
 
         return 0
     }
+
+    inline fun <reified T : ViewModel> Fragment.getViewModel(factory: ViewModelProvider.Factory): T =
+        ViewModelProvider(this, factory)[T::class.java]
+
+    inline fun <reified T : ViewModel> Fragment.getViewModel(): T =
+        ViewModelProvider(this)[T::class.java]
 }

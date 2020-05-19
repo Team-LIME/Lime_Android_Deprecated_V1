@@ -6,12 +6,12 @@
         <import type="android.view.View"/>
 
         <variable
-            name="globalValue"
-            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+            name="eventObserver"
+            type="kr.hs.dgsw.avocatalk.eventObserver.MessageDialogEventObserver" />
 
         <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.dialog.MessageEventObserver" />
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
 
         <variable
             name="title"
@@ -29,6 +29,7 @@
         <variable
             name="helpBtnText"
             type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

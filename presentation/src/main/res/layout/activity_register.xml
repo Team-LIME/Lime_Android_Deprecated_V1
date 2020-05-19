@@ -6,29 +6,13 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="kr.hs.dgsw.avocatalk.viewmodel.activity.RegisterViewModel" />
+
+
+        <variable
             name="globalValue"
             type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
-
-        <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.activity.RegisterEventObserver" />
-
-        <variable
-            name="email"
-            type="String" />
-
-        <variable
-            name="pw"
-            type="String" />
-
-        <variable
-            name="checkPw"
-            type="String" />
-
-
-        <variable
-            name="name"
-            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -173,7 +157,7 @@
                             android:inputType="text"
                             android:padding="15dp"
                             android:privateImeOptions="nm"
-                            android:text="@={name}"
+                            android:text="@={viewModel.name}"
                             android:textColor="@color/textColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,7 +177,7 @@
                             android:inputType="text"
                             android:padding="15dp"
                             android:privateImeOptions="nm"
-                            android:text="@={email}"
+                            android:text="@={viewModel.email}"
                             android:textColor="@color/textColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -214,7 +198,7 @@
                             android:inputType="textPassword"
                             android:padding="10dp"
                             android:privateImeOptions="nm"
-                            android:text="@={pw}"
+                            android:text="@={viewModel.pw}"
                             android:textColor="@color/textColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -234,7 +218,7 @@
                             android:inputType="textPassword"
                             android:padding="10dp"
                             android:privateImeOptions="nm"
-                            android:text="@={checkPw}"
+                            android:text="@={viewModel.checkPw}"
                             android:textColor="@color/textColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -307,7 +291,7 @@
                             android:fontFamily="@font/default_font_light"
                             android:text="> 개인정보 수집 및 이용약관"
                             android:textSize="14sp"
-                            android:onClick="@{()->eventObserver.onClickShowTerms1()}"
+                            android:onClick="@{()->viewModel.onClickShowTerms1()}"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -318,7 +302,7 @@
                             android:fontFamily="@font/default_font_light"
                             android:text="> 서비스 이용약관 "
                             android:textSize="14sp"
-                            android:onClick="@{()->eventObserver.onClickShowTerms2()}"
+                            android:onClick="@{()->viewModel.onClickShowTerms2()}"
                             android:textColor="@color/textColor" />
                     </LinearLayout>
 
@@ -335,7 +319,7 @@
             android:layout_height="60dp"
             android:fontFamily="@font/default_font_bold"
             android:text="@string/btn_ok"
-            android:onClick="@{() -> eventObserver.onClickRegisterBtn()}"
+            android:onClick="@{() -> viewModel.onClickRegisterBtn()}"
             android:textColor="@color/btnTextColor"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

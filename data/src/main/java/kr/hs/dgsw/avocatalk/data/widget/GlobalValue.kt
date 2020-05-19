@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 object GlobalValue {
-    val onErrorEvent: SingleLiveEvent<Throwable> = SingleLiveEvent()
+
+    val logoutEvent = SingleLiveEvent<String>()
+
+    val disconnectInternetEvent = SingleLiveEvent<Throwable>()
+
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     fun getIsLoading(): LiveData<Boolean> {
         return isLoading

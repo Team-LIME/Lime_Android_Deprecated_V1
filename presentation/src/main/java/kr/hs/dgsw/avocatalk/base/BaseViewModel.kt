@@ -15,6 +15,9 @@ import kr.hs.dgsw.avocatalk.data.widget.SingleLiveEvent
 open class BaseViewModel : ViewModel() {
     private val disposable: CompositeDisposable = CompositeDisposable()
 
+    val onErrorEvent =
+        SingleLiveEvent<Throwable>()
+
     fun addDisposable(single: Single<*>, observer: DisposableSingleObserver<*>) {
         disposable.add(single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(observer as SingleObserver<Any>) as Disposable)

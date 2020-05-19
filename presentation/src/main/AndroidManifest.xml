@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.dialog.MessageDialog" />
-        <activity android:name=".view.dialog.CheckPermissionDialog" />
+        <activity android:name=".view.dialog.PermissionNoticeDialog" />
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.MainActivity"/>

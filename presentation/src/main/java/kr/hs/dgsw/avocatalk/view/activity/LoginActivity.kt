@@ -5,52 +5,78 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
-import kr.hs.dgsw.avocatalk.BR
 import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseActivity
-import kr.hs.dgsw.avocatalk.base.BaseDialog
-import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
+import kr.hs.dgsw.avocatalk.data.exception.LoginException
 import kr.hs.dgsw.avocatalk.databinding.ActivityLoginBinding
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest
-import kr.hs.dgsw.avocatalk.viewmodel.AuthViewModel
-import kr.hs.dgsw.avocatalk.eventobserver.activity.LoginEventObserver
-import kr.hs.dgsw.avocatalk.eventobserver.dialog.MessageEventObserver
+import kr.hs.dgsw.avocatalk.eventObserver.MessageDialogEventObserver
 import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
-import kr.hs.dgsw.avocatalk.viewmodelfactory.AuthViewModelFactory
+import kr.hs.dgsw.avocatalk.viewmodel.activity.LoginViewModel
+import kr.hs.dgsw.avocatalk.viewmodelfactory.activity.LoginViewModelFactory
+import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
-import retrofit2.HttpException
-import javax.crypto.interfaces.PBEKey
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity<ActivityLoginBinding>(),LoginEventObserver {
+class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>() {
 
     @Inject
-    lateinit var mAuthViewModelFactory: AuthViewModelFactory
+    lateinit var viewModelFactory: LoginViewModelFactory
 
-    private val mAuthViewModel: AuthViewModel
-        get() = getViewModel(mAuthViewModelFactory)
+    override val viewModel: LoginViewModel
+        get() = getViewModel(viewModelFactory)
 
-    private var dialog:BaseDialog<*>? = null
+    private var dialog:MessageDialog? = null
 
-    override fun setDataBinding() {
-        super.setDataBinding()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initUI()
+    }
 
-        initBindingData(BR.email, "")
-        initBindingData(BR.pw, "")
-        initBindingData(BR.eventObserver, this)
+    override fun observerViewModel() {
+        super.observerViewModel()
+
+        viewModel.onErrorEvent.observe(this, Observer {
+            if(it is LoginException){
+                mBinding.inputLayoutPassword.error = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다."
+            }
+        })
+
+        viewModel.loginSuccessEvent.observe(this, Observer {
+            if(it) startActivity(Intent(this, MainActivity::class.java))
+            else showDialog()
+        })
+
+        viewModel.sendEmailSuccessEvent.observe(this, Observer {
+            Snackbar.make(login_layout, "인증 URL이 전송되었습니다.", Snackbar.LENGTH_LONG).show()
+            dialog!!.dismiss()
+        })
+
+        viewModel.sendEmailFailEvent.observe(this, Observer {
+            Snackbar.make(login_layout, "인증 URL 전송에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+            dialog!!.dismiss()
+        })
+
+        viewModel.onClickLoginBtnEvent.observe(this, Observer {
+            when {
+                viewModel.email.value.isNullOrBlank() ->  mBinding.inputLayoutEmail.error = getString(R.string.error_msg_empty_email)
+                viewModel.pw.value.isNullOrBlank() -> mBinding.inputLayoutPassword.error = getString(R.string.error_msg_empty_pw)
+                else -> {
+                    viewModel.sendLoginRequest()
+                    GlobalValue.isLoading.value = true
+                }
+            }
+        })
+
+        viewModel.onClickRegisterBtnEvent.observe(this, Observer {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+        })
 
     }
 
-    override fun observerLiveData() {
-        super.observerLiveData()
-        mAuthViewModel.loginSuccessEvent.observe(this, Observer {
-            if(it) startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            else showDialog()
-        })
-        mAuthViewModel.sendEmailSuccessEvent.observe(this, Observer {
-            dialog!!.dismiss()
-            Snackbar.make(login_layout, "이메일을 다시 보내드렸습니다.", Snackbar.LENGTH_LONG).show()
-        })
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.deleteToken()
     }
 
     private fun showDialog(){
@@ -61,32 +87,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(),LoginEventObserver {
             true,
             "URL이 만료되었나요?"
         )
-        dialog.initEventObserver(object :MessageEventObserver{
+        dialog.isCancelable = false
+        dialog.show(supportFragmentManager)
+        dialog.setEventObserver(object :MessageDialogEventObserver{
+            override fun onClickHelpBtn() {
+                viewModel.sendEmailRequest()
+            }
+
             override fun onClickOkBtn() {
-                mAuthViewModel.deleteToken()
+                viewModel.deleteToken()
                 dialog.dismiss()
             }
 
-            override fun onClickHelpBtn() {
-                mAuthViewModel.sendEmailRequest()
-                GlobalValue.isLoading.value = true
-            }
         })
-        dialog.show(supportFragmentManager)
 
         this.dialog = dialog
-    }
-
-    override fun onErrorEvent(e: Throwable) {
-        super.onErrorEvent(e)
-        if(e is HttpException){
-            mBinding.inputLayoutPassword.error = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다."
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initUI()
     }
 
     private fun initUI(){
@@ -103,19 +118,4 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(),LoginEventObserver {
         })
     }
 
-
-    override fun onClickLoginBtn() {
-        when {
-            mBinding.email.isNullOrBlank() ->  mBinding.inputLayoutEmail.error = getString(R.string.error_msg_empty_email)
-            mBinding.pw.isNullOrBlank() -> mBinding.inputLayoutPassword.error = getString(R.string.error_msg_empty_pw)
-            else -> {
-                mAuthViewModel.sendLoginRequest(LoginRequest("${mBinding.email}${getString(R.string.text_school_email_address)}", mBinding.pw!!,true))
-                GlobalValue.isLoading.value = true
-            }
-        }
-    }
-
-    override fun onClickRegisterBtn() {
-        startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
-    }
 }

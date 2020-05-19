@@ -18,6 +18,9 @@ class TokenDataSource @Inject constructor(
     fun insertToken(token: Token) = cache.insertToken(TokenMapper.mapToEntity(token))
     fun getToken(): Single<TokenEntity> = cache.getToken()
     fun deleteToken(): Completable = cache.deleteToken()
-    fun checkToken(): Single<String> = cache.getToken().flatMap { remote.checkToken(it.token) }
+    fun checkToken(): Single<String> = cache.getToken()
+        .onErrorResumeNext { Single.error(TokenException("token")) }
+        .flatMap { remote.checkToken(it.token) }
+        .onErrorResumeNext { Single.error(TokenException("token")) }
 
 }

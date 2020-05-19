@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import kr.hs.dgsw.avocatalk.data.datasource.LoginDataSource
 import kr.hs.dgsw.avocatalk.data.datasource.RegisterDataSource
 import kr.hs.dgsw.avocatalk.data.datasource.TokenDataSource
+import kr.hs.dgsw.avocatalk.data.datasource.UserDataSource
 import kr.hs.dgsw.avocatalk.domain.model.Token
 import kr.hs.dgsw.avocatalk.domain.repository.RegisterRepository
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest

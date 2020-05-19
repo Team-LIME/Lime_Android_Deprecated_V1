@@ -4,12 +4,13 @@
     <data>
 
         <variable
-            name="globalValue"
-            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
+            name="viewModel"
+            type="kr.hs.dgsw.avocatalk.viewmodel.fragment.main.ChatRoomsListTabViewModel" />
+
 
         <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.fragment.main.ChatRoomsListTabEventObserver" />
+            name="globalValue"
+            type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"

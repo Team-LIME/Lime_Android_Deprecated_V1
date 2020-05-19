@@ -9,4 +9,5 @@ object Constants {
     const val DEFAULT_HOST_REST = ""
     const val DEFAULT_HOST_GRAPHQL = ""
     const val DEFAULT_HOST_IMAGE = ""
+    const val SCHOOL_EMAIL_DOMAIN = ""
 }

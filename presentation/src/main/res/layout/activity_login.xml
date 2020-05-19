@@ -4,24 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="kr.hs.dgsw.avocatalk.viewmodel.activity.LoginViewModel" />
+
 
         <variable
             name="globalValue"
             type="kr.hs.dgsw.avocatalk.data.widget.GlobalValue" />
-
-        <variable
-            name="eventObserver"
-            type="kr.hs.dgsw.avocatalk.eventobserver.activity.LoginEventObserver" />
-
-        <variable
-            name="email"
-            type="String" />
-
-        <variable
-            name="pw"
-            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,7 +89,7 @@
                     android:inputType="text"
                     android:padding="15dp"
                     android:privateImeOptions="nm"
-                    android:text="@={email}"
+                    android:text="@={viewModel.email}"
                     android:textColor="@color/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -118,7 +110,7 @@
                     android:inputType="textPassword"
                     android:padding="15dp"
                     android:privateImeOptions="nm"
-                    android:text="@={pw}"
+                    android:text="@={viewModel.pw}"
                     android:textColor="@color/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -144,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/default_font_bold"
-                android:onClick="@{()->eventObserver.onClickLoginBtn()}"
+                android:onClick="@{()->viewModel.onClickLoginBtn()}"
                 android:text="@string/btn_login"
                 android:textColor="@color/btnTextColor"
                 android:textSize="18sp" />
@@ -188,7 +180,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/default_font_light"
-                android:onClick="@{()->eventObserver.onClickRegisterBtn()}"
+                android:onClick="@{()->viewModel.onClickRegisterBtn()}"
                 android:text="@string/move_to_register"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />

@@ -1,9 +1,15 @@
 package kr.hs.dgsw.avocatalk.data.network.interceptor
 
-import kr.hs.dgsw.avocatalk.data.exception.TokenException
+import io.reactivex.disposables.CompositeDisposable
+import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
+import kr.hs.dgsw.avocatalk.domain.usecase.LogoutUseCase
 import okhttp3.Interceptor
+import javax.inject.Inject
 
-class ErrorResponseInterceptor : Interceptor {
+class ErrorResponseInterceptor @Inject constructor(
+    private val logoutUseCase: LogoutUseCase,
+    private val disposable: CompositeDisposable
+) : Interceptor {
 
     private val TIME_OUT_ERROR = 408
     private val NOT_FOUND_ERROR = 404
@@ -18,8 +24,15 @@ class ErrorResponseInterceptor : Interceptor {
         when (response.code) {
             TIME_OUT_ERROR -> throw Throwable("Time Out")
             NOT_FOUND_ERROR, SERVER_ERROR -> throw  Throwable("unknown Error")
-            TOKEN_ERROR -> throw TokenException("Token Expiration")
+            TOKEN_ERROR -> {
+                logOut()
+                GlobalValue.logoutEvent.postValue("")
+                throw Throwable("Token Expiration")
+            }
             else -> return response
         }
     }
+
+    private fun logOut() = 
+        disposable.add(logoutUseCase.buildUseCaseObservable().subscribe({ }, { }))
 }
