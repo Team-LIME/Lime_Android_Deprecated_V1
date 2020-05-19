@@ -15,6 +15,7 @@ import kr.hs.dgsw.avocatalk.view.dialog.MessageDialog
 import kr.hs.dgsw.avocatalk.viewmodel.activity.LoginViewModel
 import kr.hs.dgsw.avocatalk.viewmodelfactory.activity.LoginViewModelFactory
 import kr.hs.dgsw.avocatalk.data.widget.GlobalValue
+import kr.hs.dgsw.avocatalk.service.UnCatchTaskService
 import kr.hs.dgsw.avocatalk.widget.SimpleTextWatcher
 import javax.inject.Inject
 
@@ -31,6 +32,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initUI()
+        startService(Intent(this, UnCatchTaskService::class.java))
     }
 
     override fun observerViewModel() {
@@ -76,7 +78,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.deleteToken()
+        stopService(Intent(this, UnCatchTaskService::class.java))
     }
 
     private fun showDialog(){

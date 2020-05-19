@@ -17,6 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".service.UnCatchTaskService"
+            android:stopWithTask="false"/>
+
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +33,7 @@
         <activity android:name=".view.dialog.PermissionNoticeDialog" />
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.LoginActivity" />
-        <activity android:name=".view.activity.MainActivity"/>
+        <activity android:name=".view.activity.MainActivity" />
     </application>
 
 </manifest>

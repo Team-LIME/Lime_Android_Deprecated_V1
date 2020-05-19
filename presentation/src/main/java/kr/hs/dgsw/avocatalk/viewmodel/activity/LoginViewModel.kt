@@ -1,10 +1,8 @@
 package kr.hs.dgsw.avocatalk.viewmodel.activity
 
-import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableSingleObserver
-import kr.hs.dgsw.avocatalk.R
 import kr.hs.dgsw.avocatalk.base.BaseViewModel
 import kr.hs.dgsw.avocatalk.data.util.Constants.SCHOOL_EMAIL_DOMAIN
 import kr.hs.dgsw.avocatalk.domain.request.LoginRequest

@@ -19,7 +19,8 @@ import javax.inject.Singleton
         NetWorkModule::class,
         ActivityBindingModule::class,
         FragmentBindingModule::class,
-        AndroidSupportInjectionModule::class
+        AndroidSupportInjectionModule::class,
+        ServiceBindingModule::class
     ]
 )
 interface AppComponent : AndroidInjector<AvocatalkApplication> {
